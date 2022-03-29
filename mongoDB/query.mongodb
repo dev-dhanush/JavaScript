@@ -1,0 +1,126 @@
+db.order.insertMany([
+    {"orderId":5,"orderItem":"watch","custId":1},
+    // {"orderId":2,"orderItem":"makeup","custId":2},
+    // {"orderId":3,"orderItem":"watch","custId":3},
+    // {"orderId":4,"orderItem":"application","custId":4}
+    ]
+);
+
+db.cust.insertMany([
+  {
+    "_id": "6229cdfe3654c1c8ca198202",
+    "custId": 1,
+    "name": "dhanush",
+    "email": "d@gmail.com",
+    "city": "gandhinagar"
+  },
+  {
+    "_id": "6229cdfe3654c1c8ca198203",
+    "custId": 2,
+    "name": "zala",
+    "email": "z@gmail.com",
+    "city": "ahmedabad"
+  },
+  {
+    "_id": "6229cdfe3654c1c8ca198204",
+    "custId": 3,
+    "name": "h",
+    "email": "h@gmail.com",
+    "city": "ahmedabad"
+  },
+  {
+    "_id": "6229cdfe3654c1c8ca198205",
+    "custId": 4,
+    "name": "g",
+    "email": "g@gmail.com",
+    "city": "ahmedabad"
+  },
+  {
+    "_id": "6229cdfe3654c1c8ca198206",
+    "custId": 5,
+    "name": "y",
+    "email": "y@gmail.com",
+    "city": "gandhinagar"
+  }
+]);
+
+db.cust.find({'custId':1});
+
+db.order.find({'orderId':1});
+
+db.order.deleteOne({'orderId':1});
+
+db.cust.find({
+           $or:[
+                {$and:[
+                     {"name" : "Patel"}, 
+                     {"email" : "d@gmail.com"}
+                ]},
+                {"email": "y@gmail.com"}
+            ]}).pretty();
+
+db.order.updateOne({"email":"d@gmail.com"},{$set: {"name": "Patel"}});
+    db.cust.aggregate([{
+        
+        $lookup: {
+        from: 'order',
+        localField: 'custId',
+        foreignField: 'custId',
+        as: 'customer_id'
+        }
+    }]).pretty();
+
+db.cust.aggregate( [ { $group: { _id: {"city":"$city"} } }]).pretty();
+
+db.cust.aggregate( [ { $group: { _id: {"city":"$city"}, count: { $count: { } } } }]).pretty();
+
+
+// wrong : customer_id isn't created
+// db.cust.aggregate([
+//     { $group: { _id: [{"city":"$city"},{"name":"$name"},{"customer_id":"$customer_id"}] } },
+//     {
+//     $lookup: {
+//       from: 'order',
+//       localField: 'custId',
+//       foreignField: 'custId',
+//       as: 'customer_id'
+//     }
+// }
+// ] ).pretty();
+
+
+db.cust.aggregate([
+    {$lookup: {
+      from: 'order',
+      localField: 'custId',
+      foreignField: 'custId',
+      as: 'customer_id'
+    }},
+    { $group: { _id: [{"city":"$city"},{"name":"$name"},{"customer_id":"$customer_id"}] , count: { $count: { } }  } },
+
+] ).pretty();
+
+
+db.cust.aggregate([
+    {$lookup: {
+      from: 'order',
+      localField: 'custId',
+      foreignField: 'custId',
+      as: 'customer_id'
+    }},
+    { $group: { _id: [{"city":"$city"},{"name":"$name"},{"customer_id":"$customer_id"}]  } },
+
+] ).pretty();
+
+db.cust.aggregate([
+    {$lookup: {
+      from: 'order',
+      localField: 'custId',
+      foreignField: 'custId',
+      as: 'customer_id'
+    }},
+    { $group: { _id: [{"customer_id":"$customer_id"}]  } },
+
+] ).pretty();
+
+
