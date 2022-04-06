@@ -1,0 +1,74 @@
+// retrive query number 1
+db.order.find({})
+
+{ "_id" : ObjectId("624be613365181a8d424e4c3"), "order" : "o1", "year" : 2020, "paid" : "Y", "cost" : { "price" : 30, "currency" : "NOK" }, "items" : [ { "product" : "p1", "colours" : [ "blue", "black" ], "quantity" : 15 } ], "delivery_days" : 5 }
+{ "_id" : ObjectId("624be6cb365181a8d424e4c4"), "order" : "o2", "year" : 2020, "paid" : "Y", "cost" : { "price" : 13, "currency" : "EUR" }, "items" : [ { "product" : "p2", "colours" : [ "white", "black" ], "quantity" : 1 } ], "delivery_days" : 4 }
+{ "_id" : ObjectId("624be70a365181a8d424e4c5"), "order" : "o3", "year" : 2018, "paid" : "N", "cost" : { "price" : 33, "currency" : "EUR" }, "items" : [ { "product" : "p3", "colours" : [ "blue", "black" ], "quantity" : 4 } ], "delivery_days" : 4 }
+{ "_id" : ObjectId("624be750365181a8d424e4c6"), "order" : "o4", "year" : 2017, "paid" : "Y", "cost" : { "price" : 17, "currency" : "NOK" }, "items" : [ { "product" : "p2", "colours" : [ "pink", "black" ], "quantity" : 14 }, { "product" : "p4", "colours" : [ "white" ], "quantity" : 1 } ], "delivery_days" : 2 }
+{ "_id" : ObjectId("624be789365181a8d424e4c7"), "order" : "o5", "year" : 2020, "paid" : "Y", "cost" : { "price" : 19, "currency" : "NOK" }, "items" : [ { "product" : "p1", "quantity" : 15 } ], "delivery_days" : 3 }
+
+
+//  query 2
+db.order.find({paid:"Y"})
+
+{ "_id" : ObjectId("624be613365181a8d424e4c3"), "order" : "o1", "year" : 2020, "paid" : "Y", "cost" : { "price" : 30, "currency" : "NOK" }, "items" : [ { "product" : "p1", "colours" : [ "blue", "black" ], "quantity" : 15 } ], "delivery_days" : 5 }
+{ "_id" : ObjectId("624be6cb365181a8d424e4c4"), "order" : "o2", "year" : 2020, "paid" : "Y", "cost" : { "price" : 13, "currency" : "EUR" }, "items" : [ { "product" : "p2", "colours" : [ "white", "black" ], "quantity" : 1 } ], "delivery_days" : 4 }
+{ "_id" : ObjectId("624be750365181a8d424e4c6"), "order" : "o4", "year" : 2017, "paid" : "Y", "cost" : { "price" : 17, "currency" : "NOK" }, "items" : [ { "product" : "p2", "colours" : [ "pink", "black" ], "quantity" : 14 }, { "product" : "p4", "colours" : [ "white" ], "quantity" : 1 } ], "delivery_days" : 2 }
+{ "_id" : ObjectId("624be789365181a8d424e4c7"), "order" : "o5", "year" : 2020, "paid" : "Y", "cost" : { "price" : 19, "currency" : "NOK" }, "items" : [ { "product" : "p1", "quantity" : 15 } ], "delivery_days" : 3 }
+
+
+// query 3
+db.order.find({paid:"Y",year:{ $lt: 2019}})
+
+{ "_id" : ObjectId("624be750365181a8d424e4c6"), "order" : "o4", "year" : 2017, "paid" : "Y", "cost" : { "price" : 17, "currency" : "NOK" }, "items" : [ { "product" : "p2", "colours" : [ "pink", "black" ], "quantity" : 14 }, { "product" : "p4", "colours" : [ "white" ], "quantity" : 1 } ], "delivery_days" : 2 }
+
+
+// query 4
+db.order.find({paid:"N",year:{ $lt: 2019}})
+
+{ "_id" : ObjectId("624be70a365181a8d424e4c5"), "order" : "o3", "year" : 2018, "paid" : "N", "cost" : { "price" : 33, "currency" : "EUR" }, "items" : [ { "product" : "p3", "colours" : [ "blue", "black" ], "quantity" : 4 } ], "delivery_days" : 4 }
+
+// query 5
+db.order.find({'cost.currency':"NOK"})
+
+{ "_id" : ObjectId("624be613365181a8d424e4c3"), "order" : "o1", "year" : 2020, "paid" : "Y", "cost" : { "price" : 30, "currency" : "NOK" }, "items" : [ { "product" : "p1", "colours" : [ "blue", "black" ], "quantity" : 15 } ], "delivery_days" : 5 }
+{ "_id" : ObjectId("624be750365181a8d424e4c6"), "order" : "o4", "year" : 2017, "paid" : "Y", "cost" : { "price" : 17, "currency" : "NOK" }, "items" : [ { "product" : "p2", "colours" : [ "pink", "black" ], "quantity" : 14 }, { "product" : "p4", "colours" : [ "white" ], "quantity" : 1 } ], "delivery_days" : 2 }
+{ "_id" : ObjectId("624be789365181a8d424e4c7"), "order" : "o5", "year" : 2020, "paid" : "Y", "cost" : { "price" : 19, "currency" : "NOK" }, "items" : [ { "product" : "p1", "quantity" : 15 } ], "delivery_days" : 3 }
+
+// query 6
+db.order.find({'cost.currency':"NOK", 'cost.price':{$lt : 18}})
+
+{ "_id" : ObjectId("624be750365181a8d424e4c6"), "order" : "o4", "year" : 2017, "paid" : "Y", "cost" : { "price" : 17, "currency" : "NOK" }, "items" : [ { "product" : "p2", "colours" : [ "pink", "black" ], "quantity" : 14 }, { "product" : "p4", "colours" : [ "white" ], "quantity" : 1 } ], "delivery_days" : 2 }
+
+// query 7
+db.order.find({'items.product':'p2'})
+
+{ "_id" : ObjectId("624be6cb365181a8d424e4c4"), "order" : "o2", "year" : 2020, "paid" : "Y", "cost" : { "price" : 13, "currency" : "EUR" }, "items" : [ { "product" : "p2", "colours" : [ "white", "black" ], "quantity" : 1 } ], "delivery_days" : 4 }
+{ "_id" : ObjectId("624be750365181a8d424e4c6"), "order" : "o4", "year" : 2017, "paid" : "Y", "cost" : { "price" : 17, "currency" : "NOK" }, "items" : [ { "product" : "p2", "colours" : [ "pink", "black" ], "quantity" : 14 }, { "product" : "p4", "colours" : [ "white" ], "quantity" : 1 } ], "delivery_days" : 2 }
+
+
+// query 8
+db.order.find({'items.quantity': {$lt:13}})
+
+{ "_id" : ObjectId("624be6cb365181a8d424e4c4"), "order" : "o2", "year" : 2020, "paid" : "Y", "cost" : { "price" : 13, "currency" : "EUR" }, "items" : [ { "product" : "p2", "colours" : [ "white", "black" ], "quantity" : 1 } ], "delivery_days" : 4 }
+{ "_id" : ObjectId("624be70a365181a8d424e4c5"), "order" : "o3", "year" : 2018, "paid" : "N", "cost" : { "price" : 33, "currency" : "EUR" }, "items" : [ { "product" : "p3", "colours" : [ "blue", "black" ], "quantity" : 4 } ], "delivery_days" : 4 }
+{ "_id" : ObjectId("624be750365181a8d424e4c6"), "order" : "o4", "year" : 2017, "paid" : "Y", "cost" : { "price" : 17, "currency" : "NOK" }, "items" : [ { "product" : "p2", "colours" : [ "pink", "black" ], "quantity" : 14 }, { "product" : "p4", "colours" : [ "white" ], "quantity" : 1 } ], "delivery_days" : 2 }
+
+// query 9
+db.order.find({'items.quantity': {$lt:13} , 'items.quantity': {$not: {$gt:13} } })
+
+{ "_id" : ObjectId("624be6cb365181a8d424e4c4"), "order" : "o2", "year" : 2020, "paid" : "Y", "cost" : { "price" : 13, "currency" : "EUR" }, "items" : [ { "product" : "p2", "colours" : [ "white", "black" ], "quantity" : 1 } ], "delivery_days" : 4 }
+{ "_id" : ObjectId("624be70a365181a8d424e4c5"), "order" : "o3", "year" : 2018, "paid" : "N", "cost" : { "price" : 33, "currency" : "EUR" }, "items" : [ { "product" : "p3", "colours" : [ "blue", "black" ], "quantity" : 4 } ], "delivery_days" : 4 }
+
+// query 10
+db.order.find({"items.colours.0":"blue" })
+
+{ "_id" : ObjectId("624be613365181a8d424e4c3"), "order" : "o1", "year" : 2020, "paid" : "Y", "cost" : { "price" : 30, "currency" : "NOK" }, "items" : [ { "product" : "p1", "colours" : [ "blue", "black" ], "quantity" : 15 } ], "delivery_days" : 5 }
+{ "_id" : ObjectId("624be70a365181a8d424e4c5"), "order" : "o3", "year" : 2018, "paid" : "N", "cost" : { "price" : 33, "currency" : "EUR" }, "items" : [ { "product" : "p3", "colours" : [ "blue", "black" ], "quantity" : 4 } ], "delivery_days" : 4 }
+
+// query 11
+db.order.aggregate([{$match: {year: {$gt: 2017}} }, { $group: { _id: {"year":"$year"} , total_delivery_days: { $count: {  } } } }])
+
+{ "_id" : { "year" : 2020 }, "delivery_days" : 3 }
+{ "_id" : { "year" : 2018 }, "delivery_days" : 1 }
+
