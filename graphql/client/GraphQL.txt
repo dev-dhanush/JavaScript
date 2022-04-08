@@ -1,0 +1,18 @@
+1) GraphQL is a query language for APIs as well as a runtime for fulfilling queries with existing data. 
+2) In simple terms, GraphQL is a syntax that describes how to ask for data. 
+3) It’s generally used to load data from a server to a client.
+4) GraphQL reduces the complexity of building APIs by abstracting all requests to a single endpoint. 
+5) Unlike traditional REST APIs, it is declarative, meaning whatever is requested is returned.
+
+
+APOLLO APP:
+1) Apollo Client is a comprehensive state management library for JavaScript that enables you to manage both local and remote data with GraphQL
+
+useQuery:
+1) Time to execute our TRACKS query from React! To do that, we'll use Apollo Client's useQuery hook in src/pages/tracks. js . 
+2) The useQuery React hook is the primary API for executing queries in an Apollo application. 
+
+Mutation:
+Mutations allow you to modify server-side data, and it also returns an object based on the operation performed. It can be used to insert, update, or delete data. Dgraph automatically generates GraphQL mutations for each type that you define in your schema
+
+
