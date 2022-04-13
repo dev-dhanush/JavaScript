@@ -11,6 +11,7 @@ import { ProductModule } from './product/product.module';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { DashBoardComponent } from './dash-board/dash-board.component';
 import { NotFoundService } from './services/not-found.service';
+import { ExamRoutingModule } from './exam/exam-routing.module';
 
 @NgModule({
   declarations: [
@@ -23,8 +24,9 @@ import { NotFoundService } from './services/not-found.service';
     FormsModule,
     // HttpModule,
     ProductRoutingModule,
+    // ExamRoutingModule,
     ExamModule,
-    ProductModule,
+    // ProductModule,
     // the root routing module must on the end of this array
     AppRoutingModule
   ],
