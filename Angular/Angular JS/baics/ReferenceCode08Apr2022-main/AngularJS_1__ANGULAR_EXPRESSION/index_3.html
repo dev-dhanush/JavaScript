@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html ng-app>
+    <head>
+        <title>Page Title</title>
+        <meta name='viewport' content='width=device-width, initial-scale=1'>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.8/angular.min.js" type="text/javascript"></script>
+        <style type="text/css">
+            span{color:maroon;font-size:22px;font-weight:bold;}
+            b{color:teal;font-size:22px;}
+        </style>
+    </head>
+    <body>
+        <span><b>ARRAY | BOOLEAN CONDITION | POJO</b> in <b>ANGULAR JS</b></span><hr/>
+        <div>
+            <span><b>ARRAY</b> with <b>3<sup>rd</sup> option.</b></span><br/>
+            {{['Abhishek','Nidhi','AAHANA'][2]}}
+        </div> 
+        <hr/>   
+        <div>
+            <span><b>BOOLEAN</b> with <b>True.</b></span><br/>
+            {{1>=5 && 1==1}}
+            <hr/>
+            <span><b>BOOLEAN</b> with <b>False.</b></span><br/>
+            {{1==2}}
+        </div>
+        <hr/>
+        <div>
+            <span><b>KEY VALUE PAIR - PLAIN OLD JAVASCRIPT OBJECT</b> with <b>ANGULAR JS.</b></span><br/>
+            {{ 
+				{
+					FirstName:'Abhishek',
+					LastName:'Pujara',
+					CompanyName:'Sky9 I.T. Craft'
+                }.FirstName 
+            }}
+        </div>
+    </body>
+</html>

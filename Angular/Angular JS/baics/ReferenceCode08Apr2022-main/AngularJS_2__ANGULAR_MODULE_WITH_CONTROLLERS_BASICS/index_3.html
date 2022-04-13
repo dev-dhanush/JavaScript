@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html ng-app="MyModule">
+    <head>
+        <title>Angular JS Module</title>
+        <meta name='viewport' content='width=device-width, initial-scale=1'>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.8/angular.min.js" type="text/javascript"></script>
+        
+        <script type="text/javascript">
+            //Creating Angular Module By Using angular.module() function.
+            var MyModule=angular.module("MyModule",[]);
+
+            //Creating Angular Controller By Using anonymous function with $scope as argument.
+            var MyController=function($scope,$rootScope){
+                $scope.CompanyName="Sky9 I.T. Craft";
+                $scope.FounderName="Abhishek N. Pujara";
+                $rootScope.CoFounder="Nidhi A. Pujara";
+                $scope.CoFounder="Jay N. Pujara";
+                
+                //$rootScope.CoFounder="Aahana A. Pujara";
+            };
+
+            //Creating Angular Controller By Using anonymous function with $scope as argument.
+            var MyController2=function($scope){
+                //MyController2 is blank and no $scope variables in it but $rootScope of MyController1 Can be Accessed inside the MyController2 because its global.
+            };
+
+
+            //Set controller with module by using controller function.
+            MyModule.controller("MyController",MyController);
+
+            //Set controller with module by using controller function.
+            MyModule.controller("MyController2",MyController2);
+
+        </script>
+        
+        <style type="text/css">
+            span{color:maroon;font-size:22px;font-weight:bold;}
+            b{color:teal;font-size:22px;}
+        </style>
+    </head>
+    <body>
+        <span ng-controller="MyController">{{CompanyName}}</span><hr/>
+        <span ng-controller="MyController">{{FounderName}}</span><hr/>
+        <span ng-controller="MyController">{{CoFounder}}</span><hr/>
+        <span ng-controller="MyController2">{{CoFounder}}</span><hr/>
+    </body>
+</html>

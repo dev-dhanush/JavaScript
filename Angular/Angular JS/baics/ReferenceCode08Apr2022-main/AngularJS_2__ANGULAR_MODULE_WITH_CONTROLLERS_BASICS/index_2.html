@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html ng-app="MyModule">
+    <head>
+        <title>Angular JS Module</title>
+        <meta name='viewport' content='width=device-width, initial-scale=1'>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.8/angular.min.js" type="text/javascript"></script>
+        
+        <script type="text/javascript">
+            //Creating Angular Module By Using angular.module() function.
+            var MyModule=angular.module("MyModule",[]);
+
+            //Creating Angular Controller By Using anonymous function with $scope as argument.
+            var MyController=function($scope){
+                var CompanyFounders={
+                        Founder1:"Mr. Abhishek N. Pujara",
+                        Founder2:"Mrs. Nidhi A. Pujara",
+                        Founder3:"Mr. Jay N Pujara"
+                }
+                $scope.CompanyFounders=CompanyFounders;
+            };
+
+            //Set controller with module by using controller function.
+            MyModule.controller("MyController",MyController);
+
+            //You can directly work through controller anonymous function in module also.
+            //MyModule.controller("MyController",function($scope){
+            //    $scope.CompanyName="Sky9 I.T. Craft";
+            //});
+
+        </script>
+        
+        <style type="text/css">
+            span{color:maroon;font-size:22px;font-weight:bold;}
+            b{color:teal;font-size:22px;}
+        </style>
+    </head>
+    <body>
+        <div ng-controller="MyController">
+            <span>{{CompanyFounders.Founder1}}</span><hr/>
+            <span>{{CompanyFounders.Founder2}}</span><hr/>
+            <span>{{CompanyFounders.Founder3}}</span><hr/>
+        </div>
+    </body>
+</html>

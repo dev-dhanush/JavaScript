@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html ng-app="MyModule">
+    <head>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js" type="text/javascript"></script>
+        
+        <script type="text/javascript">
+            var MyModule = angular.module('MyModule', []);
+            
+            var MyController=function($scope) {
+                var CompanyFounders=[
+                                        {
+                                            Name:"Abhishek Pujara",
+                                            DevelopmentIn:[
+                                                {Technology:"C# ASP .Net"},
+                                                {Technology:"Android App Development"},
+                                                {Technology:"React Native"},
+                                                {Technology:"MEANSTACK"},
+                                            ]
+                                        },
+                                        {
+                                            Name:"Nidhi Pujara",
+                                            DevelopmentIn:[
+                                                {Technology:"php"},
+                                                {Technology:"Laravel"},
+                                                {Technology:"SEO"},
+                                            ]
+                                        },
+                                        {
+                                            Name:"Jay Pujara",
+                                            DevelopmentIn:[
+                                                {Technology:"Android App Development"},
+                                                {Technology:"React Native"},
+                                                {Technology:"Ember JS"},
+                                            ]
+                                        }
+                                    ];
+                $scope.CompanyFounders=CompanyFounders;
+            }
+
+            MyModule.controller('MyController', MyController);
+        </script>
+    </head>
+    <body>
+        <ul ng-controller="MyController">
+            <li ng-repeat="CompanyFounder in CompanyFounders">
+                {{CompanyFounder.Name}}
+                <ul>
+                    <li ng-repeat="DevelopmentTechnology in CompanyFounder.DevelopmentIn">
+                        {{DevelopmentTechnology.Technology}}
+                    </li>
+                </ul>
+            </li>     
+        </ul>
+        <hr/>
+        <ul ng-controller="MyController">
+            <li ng-repeat="CompanyFounder in CompanyFounders">
+                {{CompanyFounder.Name}} - Index= {{$index}}
+                <ul>
+                    <li ng-repeat="DevelopmentTechnology in CompanyFounder.DevelopmentIn">
+                        {{DevelopmentTechnology.Technology}} - Index= {{$index}}
+                    </li>
+                </ul>
+            </li>     
+        </ul>
+        <hr/>
+        <ul ng-controller="MyController">
+            <li ng-repeat="CompanyFounder in CompanyFounders" ng-init="parentIndex=$index">
+                {{CompanyFounder.Name}} - Index= {{$index}}
+                <ul>
+                    <li ng-repeat="DevelopmentTechnology in CompanyFounder.DevelopmentIn">
+                        {{DevelopmentTechnology.Technology}} - Parent Index={{$parent.$index}} Index= {{$index}}
+                    </li>
+                </ul>
+            </li>     
+        </ul>
+    </body>
+</html>
