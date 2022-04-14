@@ -1,0 +1,273 @@
+1) To create new angular folder with installation of angular:
+    npm install -g @angular/cli
+
+    ng new [--Folder Name--]
+
+2) To run testing:
+    ng serve --open--
+    npm start
+    ng serve --port=7878
+
+3) To create attached model class folder in AngularJS App related to NodeJS model class.
+   ng g c --Model Class Name--
+
+   Also gives required CDN links in index.html file inside the src.
+   
+4) Create new folder called shared inside src > app > and move to shared folder in command prompt.
+
+5) Execute one command for creating model class (.ts) files inside the shared folder.
+    ng g class --ModelClassName-- --type=model
+
+6) Execute one more command called for creating service (.ts) files inside the shared folder.
+    ng g s --ModelClassName--
+
+7) Now create the same model class as nodeJS in AngularJS model class.
+   
+8) Now move forward to the service class.
+
+9) Now in service class.
+     (9.1) import {HttpClient} from '@angular/common/http'; | (Used for HTTP PROTOCOL in angular)
+     (9.2) import {Observable} from 'rxjs'; | (Used in place of AJAX in angular)
+     (9.3) import 'rxjs/add/operator/map'; | (Used in place of AJAX in angular)
+     (9.4) import 'rxjs/add/operator/toPromise'; | (Used in place of AJAX in angular)
+     (9.5) import{--Model Class--} from 'ModelClass Path'
+     (9.6) Add belowed code in service class
+              ModelClassSingleVariable: --ModelClassName--;
+              ModelClassVariableArray: --ModelClassName[]--;
+
+10) Now move forward to the src > app > app.component.html file delete all code from this file and paste app tag from src > app > --ModeClassName.component.ts-- file selector:"-- --"
+       Like <app-ModelClassName-></app-ModelClassName->
+
+11) Now once again run the command in commandpromt and see the output like --ModelClassName-- Works!
+       ng serve --open
+
+12) Now move forward to the --ModelClassName-- Folder > --ModelClassName--.component.html.
+
+13) Now design the form in --ModelClassName-- Folder > --ModelClassName--.component.html file with AngularJS ngForm & ngModel Directives shown as below.
+    <div class="row">
+        <div class="col s12">
+            <div class="card">
+                <div class="card-content white-text">
+                        <div class="row">
+                            <div class="col s5">
+                                <h4 class="center" style="color:teal;font-weight:bold;">Create New Account</h4>
+                                <form name="memberForm" #memberForm="ngForm"  (ngSubmit)="onSubmit(memberForm)">
+                                    <input type="hidden" name="_id" [(ngModel)]="memberService.selectedMember._id" #_id="ngModel" />
+                                    <div class="row">
+                                        <div class="input-field col s12">
+                                            <input type="text" name="FirstName" [(ngModel)]="memberService.selectedMember.FirstName" #FirstName="ngModel" required placegolder="Enter First Name Here.." maxlength="20" />
+                                            <label>First Name: <span class="red-text">*</span></label>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="input-field col s12">
+                                            <input type="text" name="LastName" [(ngModel)]="memberService.selectedMember.LastName" #LastName="ngModel" required  placegolder="Enter Last Name Here.." maxlength="20" />
+                                            <label>Last Name: <span class="red-text">*</span></label>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="input-field col s12">
+                                            <input type="text" name="ContactNo" [(ngModel)]="memberService.selectedMember.ContactNo" #ContactNo="ngModel" placegolder="Enter Contact No. Here.." maxlength="10" />
+                                            <label>Contact No.: <span class="red-text">*</span></label>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="input-field col s12">
+                                            <input type="text" name="EmailId" [(ngModel)]="memberService.selectedMember.EmailId" #EmailId="ngModel" placegolder="Enter Email Id Here.." maxlength="50" />
+                                            <label>Email Id: <span class="red-text">*</span></label>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="input-field col s12">
+                                            <input type="password" name="Password" [(ngModel)]="memberService.selectedMember.Password" #Password="ngModel" placegolder="Enter Password Here.." maxlength="12" />
+                                            <label>Password: <span class="red-text">*</span></label>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <label>
+                                            <input name="Gender" type="radio" checked class="with-gap"/>
+                                            <span>Male</span>
+                                        </label>
+                                        <label>
+                                            <input name="Gender" type="radio" class="with-gap" />
+                                            <span>Female</span>
+                                        </label>
+                                    </div>
+                                    <div class="row">
+                                        <div class="input-field col s12">
+                                            <button class="btn waves-effect waves-light" type="submit" style="margin-right:50px;">Submit</button> <button class="btn waves-effect waves-light" type="button" (click)="resetForm(memberForm)">Reset</button> 
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="col s7">
+                                
+                            </div>
+                        </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+14) Now import FormsModule & ReactiveFormsModule in app.module from @angular/forms shown as below.
+    
+    import { FormsModule,ReactiveFormsModule } from '@angular/forms';
+
+    also import in belowed import @NgModule() in same file as shown below
+
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        FormsModule,
+        ReactiveFormsModule
+    ],
+
+15) Now import NgForm in --Model--.component.ts same as below,
+
+    import{NgForm} from "@angular/forms";
+
+16) Now create one resetForm function for Reset button in Form inside the --Model--.component.ts file same as below,
+
+    resetForm(form?:NgForm){
+    if(form)
+      form.reset();
+    
+    this.memberService.selectedMember={
+            _id:"",
+            FirstName:"",
+            LastName:"",
+            ContactNo:"",
+            EmailId:"",
+            Password:"",
+            Gender:"",
+            Status:""
+        }
+    }
+
+    And call the same function inside ngOnInit() function same as below,
+
+        ngOnInit() {
+            this.resetForm();
+        }
+
+17) Now call the resetForm Function inside the reset button in html file,
+
+    (click)="resetForm(memberForm)"
+
+18) Now apply required attribute to the textbox whose value is mandatory and also write down the css code in style.css file which is global stylesheet file attached with index.html.
+    
+    input.ng-invalid.ng-dirty
+    {
+        border-bottom-color: #ff0000;
+        box-shadow: 0px 2px 0px 0px #ff0000;
+    }
+
+19) By default Submit Button is Disabled till all the form element value seems valid same as below;
+
+    [disabled]="!memberForm.valid"
+
+20) Now it's time to create onSubmit function for submit button inside the --Model--.component.ts same as below,
+
+    onSubmit(form: NgForm)
+    {
+
+    }                                            
+    
+    Now code in shared/member.service.ts,
+    
+    readonly baseURL='http://localhost:3000/Members'
+    
+    constructor(private http:HttpClient) { }
+
+    postMember(member:Member){
+        return this.http.post(this.baseURL,M);
+    }
+
+    Now Add in app.module file
+    import { HttpClientModule } from '@angular/common/http';
+    
+    also add the same in import
+
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        FormsModule,
+        ReactiveFormsModule,
+        HttpClientModule
+    ],
+
+21) Now in onSubmit Method call postMember Method of MemberService;
+
+    form.value.Gender="Male";  
+      form.value.Status="Y";
+      this.memberService.postMember(form.value).subscribe((res)=>{
+          this.resetForm(form);
+          Mes.toast({html:"Member Account Has Been Successfully Created.",classes:"rounded"});
+      });
+    
+
+22) Now Install cors and nodemon packages in nodeJs and also inclue following code in index.js,
+
+    const cors=require('cors');
+
+    app.use(cors({origin:'http://localhost:4200'}));
+
+23) Now In col s5 code the following HTML structure for Member Data Records Fill.
+
+    <table class="responsive-table highlight">
+                            <thead>
+                                <tr>
+                                    <th>Id</th>
+                                    <th>First Name</th>
+                                    <th>Last Name</th>
+                                    <th>Contact No.</th>
+                                    <th>Email Id</th>
+                                    <th>Gender</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let M of memberService.Members">
+                                    <td>{{M._id}}</td>
+                                    <td>{{M.FirstName}}</td>
+                                    <td>{{M.LastName}}</td>
+                                    <td>{{M.ContactNo}}</td>
+                                    <td>{{M.EmailId}}</td>
+                                    <td>{{M.Gender}}</td>
+                                    <td>{{M.Status}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+24) Now in shared folder Member.Service Code with following function.
+
+     getMemberList(){
+         return this.http.get(this.baseURL);
+    }
+
+25) Now in app member.service code with following function.
+
+    getMembersListData(){
+            this.memberService.getMemberList().subscribe((res)=>{
+            this.memberService.Members=res as Member[];
+        });
+    }
+
+26) Now add following lines in app.module.ts
+
+    import { MemberComponent } from './member/member.component';
+    import { CommonModule } from '@angular/common';
+
+    also add common module in imports in same file,
+
+    imports: [
+        BrowserModule,
+        FormsModule,
+        ReactiveFormsModule,
+        HttpClientModule,
+        AppRoutingModule,
+        CommonModule
+    ],
+
+27)
+

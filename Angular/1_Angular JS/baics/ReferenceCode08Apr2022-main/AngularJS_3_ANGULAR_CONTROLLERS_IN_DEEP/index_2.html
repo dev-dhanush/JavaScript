@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html ng-app="MyModule">
+    <head>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js" type="text/javascript"></script>
+        
+        <script type="text/javascript">
+            var MyModule = angular.module('MyModule', []);
+            
+            var MyController=function($scope) {
+                $scope.CompanyName = "Sky9 I.T. Craft";
+                $scope.ContactNo = "7016973419";    
+            }
+
+            MyModule.controller('MyController', MyController);
+        </script>
+        
+    </head>
+    <body>
+
+        <div ng-controller="MyController">
+            Enter Company Name Here: <input ng-model="CompanyName">
+            <h1>{{CompanyName}}</h1>
+            <hr/>
+            Enter Contact No. Here: <input ng-model="ContactNo">
+            <h1>{{ContactNo}}</h1>
+        </div>
+
+    </body>
+</html>
