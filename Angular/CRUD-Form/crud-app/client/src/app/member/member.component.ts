@@ -3,9 +3,9 @@ import { NgForm } from '@angular/forms';
 
 import { MemberService } from '../shared/member.service';
 import { Member } from '../shared/member.model';
-import { Message } from '@angular/compiler/src/i18n/i18n_ast';
+// import { Message } from '@angular/compiler/src/i18n/i18n_ast';
 
-declare var Mes: any;
+// declare var Mes: any;
 
 @Component({
   selector: 'app-member',
@@ -22,10 +22,6 @@ export class MemberComponent implements OnInit {
   }
 
   resetForm(form?: NgForm) {
-    if (form) {
-      form.reset();
-    }
-
     this.memberService.selectedMember = {
       _id: '',
       FirstName: '',
@@ -36,6 +32,13 @@ export class MemberComponent implements OnInit {
       Gender: '',
       Status: '',
     };
+    if (form) {
+      form.reset();
+    }
+  }
+  
+  resetFormCancel(form?: NgForm) {
+    
   }
 
   getMembersListData() {
@@ -45,19 +48,19 @@ export class MemberComponent implements OnInit {
   }
 
   onSubmit(form: NgForm) {
-    form.value.Gender = 'Female';
+    // form.value.Gender = 'Female';
     form.value.Status = 'Y';
-    if (form.value._id == '') {
+    if (form.value._id == '' || form.value._id == null) {
       this.memberService.postMember(form.value).subscribe((res) => {
         this.resetForm(form);
         this.getMembersListData();
-        Mes.toast({ html: 'Saved successfully', classes: 'rounded' });
+        // Mes.toast({ html: 'Saved successfully', classes: 'rounded' });
       });
     } else {
       this.memberService.putMember(form.value).subscribe((res) => {
         this.resetForm(form);
         this.getMembersListData();
-        Mes.toast({ html: 'Updated successfully', classes: 'rounded' });
+        // Mes.toast({ html: 'Updated successfully', classes: 'rounded' });
       });
     }
   }
@@ -71,7 +74,7 @@ export class MemberComponent implements OnInit {
       this.memberService.deleteMember(_id).subscribe((res) => {
         this.resetForm(form);
         this.getMembersListData();
-        Mes.toast({ html: 'Deleted successfully', classes: 'rounded' });
+        // Mes.toast({ html: 'Deleted successfully', classes: 'rounded' });
       });
     }
   }

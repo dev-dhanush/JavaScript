@@ -7,6 +7,9 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { MemberComponent } from './member/member.component';
 import { CommonModule } from '@angular/common';
+// import { MatRadioModule } from '@angular/material';
+import {MatRadioModule} from '@angular/material/radio';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [AppComponent, MemberComponent],
@@ -15,8 +18,10 @@ import { CommonModule } from '@angular/common';
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
+    MatRadioModule,
     CommonModule,
     AppRoutingModule,
+    BrowserAnimationsModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
