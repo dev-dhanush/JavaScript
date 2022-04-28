@@ -10,3 +10,5 @@ functionality :
 2. Password is stored in encrypted formate.
 3. Deleted Tickets will show in Data base as isDeleted true
 4. ticket table have sorting feature
+5. ORM used for backend.
+6. Redux is used for state management with useSlice
