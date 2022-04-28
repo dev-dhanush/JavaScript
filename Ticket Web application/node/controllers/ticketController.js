@@ -13,7 +13,8 @@ exports.create = async (req,res, next) => {
 		})
     } catch (error) {
 		console.log(error);
-		next(createError(error.statusCode, error.message))
+		res.status(400).json({error})
+		// next(createError(error.statusCode, error.message))
     }
 }
 
@@ -27,7 +28,8 @@ exports.update = async (req,res, next) => {
 		})
     } catch (error) {
 		console.log(error);
-		next(createError(error.statusCode, error.message))
+		// next(createError(error.statusCode, error.message))
+		res.status(400).json({error})
     }
 }
 
@@ -41,7 +43,8 @@ exports.deleteTicket = async (req,res, next) => {
 		})
     } catch (error) {
 		console.log(error);
-		next(createError(error.statusCode, error.message))
+		// next(createError(error.statusCode, error.message))
+		res.status(400).json({error})
     }
 }
 
@@ -55,7 +58,8 @@ exports.getAll = async (req,res, next) => {
 		})
     } catch (error) {
 		console.log(error);
-		next(createError(error.statusCode, error.message))
+		// next(createError(error.statusCode, error.message))
+		res.status(400).json({error})
     }
 }
 
@@ -69,6 +73,7 @@ exports.getById = async (req,res, next) => {
 		})
     } catch (error) {
 		console.log(error);
-		next(createError(error.statusCode, error.message))
+		// next(createError(error.statusCode, error.message))
+		res.status(400).json({error})	
     }
 }

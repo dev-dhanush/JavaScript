@@ -8,7 +8,7 @@ const auth = require("../middlewares/auth")
 // router.post("/create", create)
 router.post("/create", auth, create)
 router.put("/update/:id", auth, update)
-router.delete("/delete/:id", auth, deleteTicket)
+router.delete("/delete/:id", deleteTicket)
 router.get("/getAll",auth, getAll)
 router.get("/get/:id", auth, getById)
 

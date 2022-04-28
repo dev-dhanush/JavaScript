@@ -15,7 +15,7 @@ exports.create = async (data) => {
 		})
 		return ticket
 	} catch (error) {
-		console.log(error);
+		console.log(error)
 		throw createError.NotAcceptable("Ticket is not created. Try again later..")
 	}
 }
@@ -37,10 +37,11 @@ exports.update = async (id, data) => {
 
 exports.deleteTicket = async (id) => {
 	try {
-		let ticket = await prisma.ticket.delete({
+		let ticket = await prisma.ticket.update({
 			where: {
 				ticket_no: Number(id),
 			},
+			data: { isDeleted: true },
 		})
 		return ticket
 	} catch (error) {
@@ -51,21 +52,25 @@ exports.deleteTicket = async (id) => {
 
 exports.getAll = async () => {
 	try {
-		let ticket = await prisma.ticket.findMany({})
-		console.log(ticket);
+		let ticket = await prisma.ticket.findMany({
+			where: {
+				isDeleted: false,
+			},
+		})
+		console.log(ticket)
 		return ticket
 	} catch (error) {
-		console.log(error);
+		console.log(error)
 		throw createError.NotFound("NO Ticket is available. Try again later..")
 	}
 }
 
 exports.getById = async (id) => {
 	try {
-		let ticket = await prisma.ticket.findUnique({ where: { ticket_no: Number(id) } })
+		let ticket = await prisma.ticket.findUnique({ where: { ticket_no: Number(id), isDeleted: false } })
 		return ticket
 	} catch (error) {
-		console.log(error);
+		console.log(error)
 		throw createError.NotFound("Ticket is not available. Create and Try again..")
 	}
 }
