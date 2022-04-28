@@ -1,5 +1,5 @@
 const { PrismaClient } = require("@prisma/client")
-const prisma = new PrismaClient()
+const prisma = new PrismaClient({ log: ["query"], errorFormat: "pretty", rejectOnNotFound: true })
 const createError = require("http-errors")
 require("dotenv").config()
 const bcrypt = require("bcryptjs")
@@ -19,9 +19,10 @@ exports.register = async (data) => {
 
 exports.login = async (data) => {
 	const { email, password } = data
-	const user = await prisma.user.findFirst({
+	console.log(data)
+	const user = await prisma.user.findUnique({
 		where: {
-			email,
+			email: email,
 		},
 	})
 	if (!user) {

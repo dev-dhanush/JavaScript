@@ -1,5 +1,5 @@
 const { register, login, all } = require("../services/auth.services")
-const createError = require("http-errors");
+const createError = require("http-errors")
 
 exports.registerUser = async (req, res, next) => {
 	try {
@@ -15,14 +15,6 @@ exports.registerUser = async (req, res, next) => {
 	}
 }
 
-exports.signin = async (req, res) => {
-	try {
-		const users = await prisma.user.findMany()
-		res.json(users)
-	} catch (error) {
-		res.status(400).json({ error })
-	}
-}
 exports.login = async (req, res, next) => {
 	try {
 		const data = await login(req.body)
@@ -32,9 +24,9 @@ exports.login = async (req, res, next) => {
 			data,
 		})
 	} catch (error) {
-		console.log("error",error);
-		// res.status(400).json({ error: error })
-		next(createError(error.statusCode, error.message))
+		console.log("error", error)
+		res.status(400).json({ error: error })
+		// next(createError(error.statusCode, error.message))
 	}
 }
 
