@@ -13,7 +13,7 @@ export const counterSlice = createSlice({
 	// The `reducers` field lets us define reducers and generate associated actions
 	reducers: {
 		toggleLike: (state) => {
-			state.like = !state.like
+			state.like = !state. like
 			state.dislike = false
 		},
 		toggleUnlike: (state) => {
