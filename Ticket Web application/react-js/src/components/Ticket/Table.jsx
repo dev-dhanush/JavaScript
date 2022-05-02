@@ -18,9 +18,7 @@ import DeleteIcon from "@material-ui/icons/Delete"
 import AddTicket from "./AddTicket"
 import EditTicket from "./EditTicket"
 import { useDispatch, useSelector } from "react-redux"
-import { deleteTic } from "../slices/ticketAction"
-
-// import { getTickets } from "../slices/ticket"
+import { deleteTic } from "./ticketAction"
 
 function descendingComparator(a, b, orderBy) {
 	if (b[orderBy] < a[orderBy]) {
@@ -35,8 +33,6 @@ function descendingComparator(a, b, orderBy) {
 function getComparator(order, orderBy) {
 	return order === "desc" ? (a, b) => descendingComparator(a, b, orderBy) : (a, b) => -descendingComparator(a, b, orderBy)
 }
-
-// let rows = [{ ticket_no: 1, ticket_title: "Demo title", title_desc: "Descripction", authorId: 1 }]
 
 function stableSort(array, comparator) {
 	const stabilizedThis = array.map((el, index) => [el, index])
@@ -115,7 +111,6 @@ export default function EnhancedTable() {
 	const classes = useStyles()
 	const [order, setOrder] = React.useState("asc")
 	const [orderBy, setOrderBy] = React.useState("ticket_no")
-	const [selected, setSelected] = React.useState([])
 	const [page, setPage] = React.useState(0)
 	const [dense, setDense] = React.useState(false)
 	const [rowsPerPage, setRowsPerPage] = React.useState(5)
@@ -127,25 +122,6 @@ export default function EnhancedTable() {
 		setOrder(isAsc ? "desc" : "asc")
 		setOrderBy(property)
 	}
-
-	const handleClick = (event, name) => {
-		// const selectedIndex = selected.indexOf(name);
-		// let newSelected = [];
-		// if (selectedIndex === -1) {
-		//   newSelected = newSelected.concat(selected, name);
-		// } else if (selectedIndex === 0) {
-		//   newSelected = newSelected.concat(selected.slice(1));
-		// } else if (selectedIndex === selected.length - 1) {
-		//   newSelected = newSelected.concat(selected.slice(0, -1));
-		// } else if (selectedIndex > 0) {
-		//   newSelected = newSelected.concat(
-		//     selected.slice(0, selectedIndex),
-		//     selected.slice(selectedIndex + 1),
-		//   );
-		// }
-		// setSelected(newSelected);
-	}
-
 	const handleChangePage = (event, newPage) => {
 		setPage(newPage)
 	}
@@ -164,41 +140,22 @@ export default function EnhancedTable() {
 		window.location.reload()
 	}
 
-	// const isSelected = (name) => selected.indexOf(name) !== -1;
 	const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage)
 
 	return (
 		<div className={classes.root}>
 			<Paper className={classes.paper}>
-				{/* <EnhancedTableToolbar /> */}
 				<TableContainer>
 					<Table className={classes.table} aria-labelledby="tableTitle" size={dense ? "small" : "medium"} aria-label="enhanced table">
-						<EnhancedTableHead
-							classes={classes}
-							// numSelected={selected.length}
-							order={order}
-							orderBy={orderBy}
-							// onSelectAllClick={handleSelectAllClick}
-							onRequestSort={handleRequestSort}
-							rowCount={rows.length}
-						/>
+						<EnhancedTableHead classes={classes} order={order} orderBy={orderBy} onRequestSort={handleRequestSort} rowCount={rows.length} />
 						<TableBody>
 							{stableSort(rows, getComparator(order, orderBy))
 								.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
 								.map((row, index) => {
-									// const isItemSelected = isSelected(row.ticket_no);
 									const labelId = `enhanced-table-checkbox-${index}`
 
 									return (
-										<TableRow
-											hover
-											onClick={(event) => handleClick(event, row.ticket_no)}
-											role="checkbox"
-											// aria-checked={isItemSelected}
-											tabIndex={-1}
-											key={row.ticket_no}
-											// selected={isItemSelected}
-										>
+										<TableRow hover role="checkbox" tabIndex={-1} key={row.ticket_no}>
 											<TableCell padding="checkbox"></TableCell>
 											<TableCell component="th" id={labelId} scope="row" padding="none">
 												{row.ticket_no}
@@ -213,7 +170,7 @@ export default function EnhancedTable() {
 													}}
 													title="Delete"
 												>
-													<IconButton style={{ padding: 0, margin: 0 }} aria-label="delete">
+													<IconButton aria-label="delete">
 														<DeleteIcon />
 													</IconButton>
 												</Tooltip>
@@ -230,7 +187,7 @@ export default function EnhancedTable() {
 									)
 								})}
 							{emptyRows > 0 && (
-								<TableRow style={{ height: (dense ? 33 : 53) * emptyRows }}>
+								<TableRow style={{ height: (dense ? 20 : 53) * emptyRows }}>
 									<TableCell colSpan={6} />
 								</TableRow>
 							)}
@@ -241,7 +198,6 @@ export default function EnhancedTable() {
 			</Paper>
 			<div style={{ display: "flex", justifyContent: "space-around", flexDirection: "row" }}>
 				<FormControlLabel control={<Switch checked={dense} onChange={handleChangeDense} />} label="Dense padding" />
-				{/* <AddCircleRoundedIcon color="primary" style={{ fontSize: 60 }} /> */}
 				<AddTicket />
 			</div>
 		</div>

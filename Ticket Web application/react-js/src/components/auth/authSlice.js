@@ -1,9 +1,20 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
-import { setMessage } from "./message"
+import { setMessage } from "../message/messageSlice"
 
-import AuthService from "../services/auth.service"
+import AuthService from "../auth/auth.service"
 
 const user = JSON.parse(localStorage.getItem("user"))
+
+export const authHeader = () => {
+	const user = JSON.parse(localStorage.getItem("user"))
+
+	if (user && user.accessToken) {
+		return { Authorization: "Bearer " + user.accessToken }
+	} else {
+		return {}
+	}
+}
+
 
 export const register = createAsyncThunk("auth/register", ({ username, email, password }, thunkAPI) => {
 	AuthService.register(username, email, password).then((data) => {
@@ -22,10 +33,6 @@ export const login = createAsyncThunk("auth/login", async ({ username, password 
 		const data = await AuthService.login(username, password)
 		return { user: data }
 	} catch (error) {
-		console.log(error)
-		if (error.toString() === "Error: Request failed with status code 400") {
-			error = "login and password doesn't match"
-		}
 		thunkAPI.dispatch(setMessage(error.toString()))
 		return thunkAPI.rejectWithValue()
 	}
@@ -49,7 +56,6 @@ const authSlice = createSlice({
 		},
 		[login.fulfilled]: (state, action) => {
 			state.isLoggedIn = true
-			console.log(action.payload.user)
 			state.user = action.payload.user
 		},
 		[login.rejected]: (state, action) => {

@@ -3,8 +3,8 @@ import { useDispatch, useSelector } from "react-redux"
 import { Formik, Field, Form, ErrorMessage } from "formik"
 import * as Yup from "yup"
 
-import { register } from "../slices/auth"
-import { clearMessage } from "../slices/message"
+import { register } from "../auth/authSlice"
+import { clearMessage } from "../message/messageSlice"
 
 const Register = () => {
 	const [successful, setSuccessful] = useState(false)
@@ -28,8 +28,8 @@ const Register = () => {
 			.required("This field is required!"),
 		email: Yup.string().email("This is not a valid email.").required("This field is required!"),
 		password: Yup.string()
-		.test("len","the password len is 4 to 40", (val) => val && val.toString().length >= 6 && val.toString().length <= 40)
-		.test("regex", "The password should contains a number.", (val) => new RegExp("^(?=.*[a-z])(?=.*[0-9])(?=.{8,})").test(val))
+			.test("len", "the password len is 4 to 40", (val) => val && val.toString().length >= 6 && val.toString().length <= 40)
+			.test("regex", "The password should contains a number.", (val) => new RegExp("^(?=.*[a-z])(?=.*[0-9])(?=.{8,})").test(val))
 			.required("This field is required!"),
 	})
 
@@ -44,7 +44,6 @@ const Register = () => {
 				setSuccessful(true)
 			})
 			.catch((error) => {
-				console.log("error from Register",error);
 				setSuccessful(false)
 			})
 	}

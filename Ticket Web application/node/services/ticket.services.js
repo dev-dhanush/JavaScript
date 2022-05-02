@@ -1,5 +1,5 @@
 const { PrismaClient } = require("@prisma/client")
-const prisma = new PrismaClient()
+const prisma = new PrismaClient({ rejectOnNotFound: true })
 const createError = require("http-errors")
 require("dotenv").config()
 
@@ -30,7 +30,7 @@ exports.update = async (id, data) => {
 		})
 		return ticket
 	} catch (error) {
-		console.log(error);
+		console.log(error)
 		throw createError.NotAcceptable("Ticket is not updated. Try again later..")
 	}
 }
@@ -45,7 +45,7 @@ exports.deleteTicket = async (id) => {
 		})
 		return ticket
 	} catch (error) {
-		console.log(error);
+		console.log(error)
 		throw createError.NotAcceptable("Ticket is not deleted. Try again later..")
 	}
 }

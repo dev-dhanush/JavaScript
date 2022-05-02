@@ -25,7 +25,6 @@ const auth = async (req,res,next) => {
         next(createError.Unauthorized(e.message))
     }
 
-    // prisma.user.
 
 }
 

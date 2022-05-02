@@ -10,7 +10,6 @@ exports.registerUser = async (req, res, next) => {
 			data: user,
 		})
 	} catch (error) {
-		// res.status(400).json({ error: error })
 		next(createError(error.statusCode, error.message))
 	}
 }
@@ -24,9 +23,7 @@ exports.login = async (req, res, next) => {
 			data,
 		})
 	} catch (error) {
-		console.log("error", error)
 		res.status(400).json({ error: error })
-		// next(createError(error.statusCode, error.message))
 	}
 }
 

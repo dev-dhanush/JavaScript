@@ -28,8 +28,8 @@ const ticketListSlice = createSlice({
 			state.error = payload
 		},
 		updateTicketSuccess: (state, action) => {
-			state.tickets = state.tickets.map(ticket => {
-				if(ticket.authorId === action.payload.authorId){
+			state.tickets = state.tickets.map((ticket) => {
+				if (ticket.authorId === action.payload.authorId) {
 					ticket = action.payload
 				}
 			})
@@ -85,6 +85,6 @@ const ticketListSlice = createSlice({
 
 const { reducer, actions } = ticketListSlice
 
-export const { updateTicketFail, updateTicketSuccess,fetchTicketLoading, deleteTicket, fetchTicketSuccess, fetchTicketFail, fetchSingleTicketLoading, fetchSingleTicketSuccess, fetchSingleTicketFail, replyTicketLoading, replyTicketSuccess, replyTicketFail, closeTicketLoading, closeTicketSuccess, closeTicketFail, resetResponseMsg } = actions
+export const { updateTicketFail, updateTicketSuccess, fetchTicketLoading, deleteTicket, fetchTicketSuccess, fetchTicketFail, fetchSingleTicketLoading, fetchSingleTicketSuccess, fetchSingleTicketFail, replyTicketLoading, replyTicketSuccess, replyTicketFail, closeTicketLoading, closeTicketSuccess, closeTicketFail, resetResponseMsg } = actions
 
 export default reducer
