@@ -1,4 +1,5 @@
-import React from "react"
+import React, { useEffect } from "react"
+import { useDispatch, useSelector } from "react-redux"
 import PropTypes from "prop-types"
 import { makeStyles } from "@material-ui/core/styles"
 import Table from "@material-ui/core/Table"
@@ -15,13 +16,14 @@ import Tooltip from "@material-ui/core/Tooltip"
 import FormControlLabel from "@material-ui/core/FormControlLabel"
 import Switch from "@material-ui/core/Switch"
 import DeleteIcon from "@material-ui/icons/Delete"
+
 import AddTicket from "./AddTicket"
 import EditTicket from "./EditTicket"
-import { useDispatch, useSelector } from "react-redux"
-import { deleteTic } from "./ticketAction"
+import { deleteTic, fetchAllTickets } from "./ticketAction"
 
 function descendingComparator(a, b, orderBy) {
-	if (b[orderBy] < a[orderBy]) {
+	if (!a || !b) return 0
+	if (b.orderBy < a.orderBy) {
 		return -1
 	}
 	if (b[orderBy] > a[orderBy]) {
@@ -48,7 +50,7 @@ const headCells = [
 	{ id: "ticket_no", numeric: false, disablePadding: true, label: "Ticket NO" },
 	{ id: "ticket_title", numeric: true, disablePadding: false, label: "Title" },
 	{ id: "ticket_desc", numeric: true, disablePadding: false, label: "Desc" },
-	{ id: "authorId", numeric: true, disablePadding: false, label: "Author id" },
+	{ id: "author", numeric: true, disablePadding: false, label: "Author" },
 	{ id: "delete", numeric: true, disablePadding: false, label: "Delete" },
 	{ id: "edit", numeric: true, disablePadding: false, label: "Edit" },
 ]
@@ -137,7 +139,7 @@ export default function EnhancedTable() {
 
 	const handleDelete = (id) => {
 		dispatch(deleteTic(id))
-		window.location.reload()
+		dispatch(fetchAllTickets())
 	}
 
 	const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage)
@@ -149,6 +151,7 @@ export default function EnhancedTable() {
 					<Table className={classes.table} aria-labelledby="tableTitle" size={dense ? "small" : "medium"} aria-label="enhanced table">
 						<EnhancedTableHead classes={classes} order={order} orderBy={orderBy} onRequestSort={handleRequestSort} rowCount={rows.length} />
 						<TableBody>
+							{console.log(rows)}
 							{stableSort(rows, getComparator(order, orderBy))
 								.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
 								.map((row, index) => {
@@ -162,7 +165,7 @@ export default function EnhancedTable() {
 											</TableCell>
 											<TableCell align="right">{row.ticket_title}</TableCell>
 											<TableCell align="right">{row.ticket_desc}</TableCell>
-											<TableCell align="right">{row.authorId}</TableCell>
+											<TableCell align="right">{row.author.username}</TableCell>
 											<TableCell align="right">
 												<Tooltip
 													onClick={() => {

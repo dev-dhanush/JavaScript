@@ -1,22 +1,29 @@
-const { PrismaClient } = require("@prisma/client")
+import Client from '@prisma/client';
+const { PrismaClient } = Client
 const prisma = new PrismaClient({ rejectOnNotFound: true })
-const createError = require("http-errors")
-require("dotenv").config()
-const bcrypt = require("bcryptjs")
-const jwt = require("../utils/jwt")
 
-exports.register = async (data) => {
-	data.password = bcrypt.hashSync(data.password, 8)
+import httpError from "http-errors"
+const { NotFound, Unauthorized } = httpError
+
+import "dotenv/config"
+
+import bcryptjs from 'bcryptjs';
+const { hashSync, compareSync } = bcryptjs;
+
+import { signAccessToken } from "../utils/jwt.js"
+
+export async function register(data) {
+	data.password = hashSync(data.password, 8)
 	let user = await prisma.user.create({
 		data: data,
 	})
 
-	data.accessToken = await jwt.signAccessToken(user)
+	data.accessToken = await signAccessToken(user)
 
 	return data
 }
 
-exports.login = async (data) => {
+export async function login(data) {
 	const { email, password } = data
 	console.log(data)
 	const user = await prisma.user.findUnique({
@@ -25,17 +32,16 @@ exports.login = async (data) => {
 		},
 	})
 	if (!user) {
-		throw createError.NotFound("User not registered")
+		throw NotFound("User not registered")
 	}
-	const checkPassword = bcrypt.compareSync(password, user.password)
-	if (!checkPassword) throw createError.Unauthorized("Email address or password not valid")
+	const checkPassword = compareSync(password, user.password)
+	if (!checkPassword) throw Unauthorized("Email address or password not valid")
 	delete user.password
-	const accessToken = await jwt.signAccessToken(user)
+	const accessToken = await signAccessToken(user)
 	return { ...user, accessToken }
 }
 
-exports.all = async () => {
+export async function all() {
 	const allUsers = await prisma.user.findMany()
 	return allUsers
 }
-

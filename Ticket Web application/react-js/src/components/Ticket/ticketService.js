@@ -4,7 +4,7 @@ import { authHeader } from "../auth/authSlice"
 export const getTicket = async (id) => {
 	id = id || ""
 	return await axios
-		.get(`${process.env.REACT_APP_API}ticket/${id}`, { headers: authHeader() })
+		.get(`${process.env.REACT_APP_API}ticket/get/${id}`, { headers: authHeader() })
 		.then((res) => {
 			return res.data
 		})
@@ -29,9 +29,9 @@ export const addTicket = async (ticket) => {
 }
 
 export const deleteTicket = async (id) => {
-	return await axios.delete(process.env.REACT_APP_API + "/ticket/delete/" + id, { headers: authHeader() })
+	return await axios.put(process.env.REACT_APP_API + "ticket/delete/" + id, { headers: authHeader() })
 }
 
 export const editTicketService = async (id, ticket) => {
-	return await axios.put(process.env.REACT_APP_API + "/ticket/update/" + id, ticket, { headers: authHeader() })
+	return await axios.put(process.env.REACT_APP_API + "ticket/update/" + id, ticket, { headers: authHeader() })
 }

@@ -1,15 +1,11 @@
 import React, { useState } from "react"
 import { Button } from "@material-ui/core"
 import { useHistory } from "react-router-dom"
-// import { useSelector } from "react-redux"
 import TextField from "@material-ui/core/TextField"
 import Dialog from "@material-ui/core/Dialog"
 import DialogActions from "@material-ui/core/DialogActions"
 import DialogContent from "@material-ui/core/DialogContent"
 import DialogTitle from "@material-ui/core/DialogTitle"
-
-import { Formik, Field, Form, ErrorMessage } from "formik"
-// import * as Yup from "yup"
 
 import { addTicket } from "./ticketService"
 
@@ -61,7 +57,7 @@ export default function AddTicket() {
 			ticket.authorId = user.id
 			await addTicket(ticket)
 			// setSuccessful(true)
-			window.location.reload()
+			window.location.reload() // removed with useState
 		} else {
 			history.push("/signin")
 			// setSuccessful(false)

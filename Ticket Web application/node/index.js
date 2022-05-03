@@ -1,21 +1,17 @@
-const { Prisma, PrismaClient } = require("@prisma/client")
-const express = require("express")
-const cors = require("cors")
-const prisma = new PrismaClient()
-const morgan = require('morgan')
-const expressValidator = require('express-validator');
+import express, { json } from "express"
+import cors from "cors"
+import morgan from "morgan"
+import expressValidator from "express-validator"
 const app = express()
+import userRoutes from "./routes/userRoutes.js"
+import ticketRoutes from "./routes/ticketRoutes.js"
 
-
-app.use(morgan("dev"));
-app.use(express.json());
-app.use(expressValidator());
-app.use(cors());
-
-const userRoutes = require("./routes/userRoutes")
-const ticketRoutes = require("./routes/ticketRoutes")
+app.use(morgan("dev"))
+app.use(json())
+app.use(expressValidator())
+app.use(cors())
 
 app.use("/api/user", userRoutes)
 app.use("/api/ticket", ticketRoutes)
 
-const server = app.listen(8080, () => console.log(`🚀 Server ready at: http://localhost:8080`))
+const server = app.listen(process.env.PORT, () => console.log(`🚀 Server ready at: http://localhost:8080`))

@@ -17,7 +17,7 @@ const ticketListSlice = createSlice({
 			state.isLoading = true
 		},
 		deleteTicket: (state, action) => {
-			state.tickets = state.tickets.filter((tic) => tic === action.payload.ticket)
+			state.tickets = state.tickets.filter((tic) => tic.ticket_no !== action.payload)
 		},
 		fetchTicketSuccess: (state, action) => {
 			state.tickets = action.payload

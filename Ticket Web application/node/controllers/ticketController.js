@@ -1,12 +1,13 @@
-const { create, update, deleteTicket, getById, getAll } = require("../services/ticket.services.js")
+import { ticketCreatedSuccessfully,ticketDeletedSuccessfully,ticketUpdatedSuccessfully } from "../messages/index.js"
+import { createService, updateService, deleteTicketService, getByIdService, getAllService } from "../services/ticket.services.js"
 
-exports.create = async (req, res, next) => {
+export const create = async (req, res, next) => {
 	try {
 		req.body.authorId = req.user.payload.id
-		const ticket = await create(req.body)
+		const ticket = await createService(req.body)
 		res.status(200).json({
 			status: true,
-			message: "Ticket Created successfully",
+			message: ticketCreatedSuccessfully,
 			data: ticket,
 		})
 	} catch (error) {
@@ -14,12 +15,12 @@ exports.create = async (req, res, next) => {
 	}
 }
 
-exports.update = async (req, res, next) => {
+export const update = async (req, res, next) => {
 	try {
-		const ticket = await update(req.params.id, req.body)
+		const ticket = await updateService(req.params.id, req.body)
 		res.status(200).json({
 			status: true,
-			message: "Ticket Updated successfully",
+			message: ticketUpdatedSuccessfully,
 			data: ticket,
 		})
 	} catch (error) {
@@ -27,12 +28,12 @@ exports.update = async (req, res, next) => {
 	}
 }
 
-exports.deleteTicket = async (req, res, next) => {
+export const deleteTicket = async (req, res, next) => {
 	try {
-		const ticket = await deleteTicket(req.params.id)
+		const ticket = await deleteTicketService(req.params.id)
 		res.status(200).json({
 			status: true,
-			message: "Ticket Deleted successfully",
+			message: ticketDeletedSuccessfully,
 			data: ticket,
 		})
 	} catch (error) {
@@ -40,9 +41,9 @@ exports.deleteTicket = async (req, res, next) => {
 	}
 }
 
-exports.getAll = async (req, res, next) => {
+export const getAll = async (req, res, next) => {
 	try {
-		const ticket = await getAll()
+		const ticket = await getAllService()
 		res.status(200).json({
 			status: true,
 			message: "",
@@ -53,9 +54,9 @@ exports.getAll = async (req, res, next) => {
 	}
 }
 
-exports.getById = async (req, res, next) => {
+export const getById = async (req, res, next) => {
 	try {
-		const ticket = await getById(req.params.id)
+		const ticket = await getByIdService(req.params.id)
 		res.status(200).json({
 			status: true,
 			message: "",

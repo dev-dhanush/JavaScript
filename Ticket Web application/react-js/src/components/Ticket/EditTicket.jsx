@@ -8,7 +8,7 @@ import DialogContent from "@material-ui/core/DialogContent"
 import DialogTitle from "@material-ui/core/DialogTitle"
 import EditCircleRoundedIcon from "@material-ui/icons/Edit"
 import { getTicket as getTicketService } from "./ticketService"
-import { updateTicketAction } from "./ticketAction"
+import { fetchAllTickets, updateTicketAction } from "./ticketAction"
 
 const EditTicket = (props) => {
 	const [open, setOpen] = React.useState(false)
@@ -33,15 +33,16 @@ const EditTicket = (props) => {
 
 	const updateTicketDetails = () => {
 		dispatch(updateTicketAction(id, ticket))
+		handleClose()
 		window.location.reload()
 	}
 
 	useEffect(() => {
 		if (open) {
 			const existingTicket = getTicketService(id)
-			existingTicket.then((data) => setTicket(data)).catch((err) => console.log(err))
+			existingTicket.then((data) => setTicket(data.data[0])).catch((err) => console.log(err))
 		}
-	}, [id,open])
+	}, [id, open])
 
 	return (
 		<div>
@@ -50,7 +51,7 @@ const EditTicket = (props) => {
 				<DialogTitle id="form-dialog-title">Update Ticket</DialogTitle>
 				<DialogContent>
 					<TextField onChange={(e) => onValueChange(e)} name="ticket_title" value={ticket_title} autoFocus margin="dense" id="ticket_title" label="Ticket Title" type="text" fullWidth />
-					<TextField onChange={(e) => onValueChange(e)} name="ticket_desc" value={ticket_desc} autoFocus margin="dense" id="ticket_desc" label="Ticket Description" type="text" fullWidth />
+					<TextField onChange={(e) => onValueChange(e)} name="ticket_desc" value={ticket_desc} margin="dense" id="ticket_desc" label="Ticket Description" type="text" fullWidth />
 				</DialogContent>
 				<DialogActions>
 					<Button onClick={handleClose} color="primary">

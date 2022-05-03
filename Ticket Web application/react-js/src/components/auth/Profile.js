@@ -8,19 +8,15 @@ const Profile = () => {
 	return (
 		<div className="container">
 			<header className="jumbotron">
-				<h3>
-					<strong>{currentUser.data ? currentUser.data.username : currentUser.username}</strong> Profile
-				</h3>
+				<h2>Profile</h2>
+				<br />
+				<h4>
+					<strong>{currentUser.data ? currentUser.data.username : currentUser.username}</strong>
+				</h4>
+				<h4>
+					<strong>Email:</strong> {currentUser.data ? currentUser.data.email : currentUser.email}
+				</h4>
 			</header>
-			<p>
-				<strong>Token:</strong> {currentUser.data ? currentUser.data.accessToken.substring(0, 20) : currentUser.accessToken.substring(0, 20)} ...
-			</p>
-			<p>
-				<strong>Id:</strong> {currentUser.data ? currentUser.data.id : currentUser.id}
-			</p>
-			<p>
-				<strong>Email:</strong> {currentUser.data ? currentUser.data.email : currentUser.email}
-			</p>
 		</div>
 	)
 }

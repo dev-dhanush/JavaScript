@@ -1,4 +1,4 @@
-import { fetchTicketLoading, updateTicketFail, updateTicketSuccess, fetchTicketSuccess, fetchTicketFail } from "./ticket"
+import { fetchTicketLoading, updateTicketFail, updateTicketSuccess, fetchTicketSuccess, fetchTicketFail,deleteTicket } from "./ticketSlice"
 
 import { getAllTicket, deleteTicket as deleteTicketService, editTicketService } from "./ticketService"
 
@@ -22,7 +22,8 @@ export const deleteTic = (id) => async (dispatch) => {
 	dispatch(fetchTicketLoading())
 	try {
 		const result = await deleteTicketService(id)
-		result.data && dispatch(deleteTic(result.data.data.authorId))
+		console.log(result);
+		result.data.data && dispatch(deleteTicket(result.data.data.ticket_no))
 	} catch (error) {}
 }
 
@@ -30,7 +31,7 @@ export const updateTicketAction = (id, ticket) => async (dispatch) => {
 	dispatch(fetchTicketLoading())
 	try {
 		const result = await editTicketService(id, ticket)
-		result.data && dispatch(updateTicketSuccess(result.data.data.authorId))
+		result.data && dispatch(updateTicketSuccess(result.data.data.ticket_no))
 	} catch (error) {
 		dispatch(updateTicketFail())
 	}
