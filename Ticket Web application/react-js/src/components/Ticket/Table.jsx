@@ -154,7 +154,6 @@ export default function EnhancedTable() {
 					<Table className={classes.table} aria-labelledby="tableTitle" size={dense ? "small" : "medium"} aria-label="enhanced table">
 						<EnhancedTableHead classes={classes} order={order} orderBy={orderBy} onRequestSort={handleRequestSort} rowCount={rows.length} />
 						<TableBody>
-							{console.log(rows)}
 							{stableSort(rows, getComparator(order, orderBy))
 								.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
 								.map((row, index) => {

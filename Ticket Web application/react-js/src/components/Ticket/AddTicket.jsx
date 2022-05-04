@@ -42,13 +42,12 @@ export default function AddTicket() {
 		setError("")
 	}
 
-	// const handleClickOpen = () => {
-	// 	setOpen(true)
-	// }
+	const handleClickOpen = () => {
+		setOpen(true)
+	}
 
 	const handleClose = () => {
 		setOpen(false)
-		history.push("/ticket")
 	}
 
 	const addTicketDetails = async () => {
@@ -57,6 +56,7 @@ export default function AddTicket() {
 			ticket.authorId = user.id
 			await addTicket(ticket)
 			history.push("/ticket")
+			setOpen(false)
 		} else {
 			history.push("/signin")
 		}
@@ -64,9 +64,9 @@ export default function AddTicket() {
 
 	return (
 		<div>
-			{/* <Button variant="outlined" style={{ fontSize: 15 }} onClick={handleClickOpen} color="primary">
+			<Button variant="outlined" style={{ fontSize: 15 }} onClick={handleClickOpen} color="primary">
 				Add Ticket
-			</Button> */}
+			</Button>
 
 			<Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
 				<DialogTitle id="form-dialog-title">Add Ticket</DialogTitle>
