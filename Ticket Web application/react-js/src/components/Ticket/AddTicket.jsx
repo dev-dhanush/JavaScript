@@ -1,35 +1,21 @@
 import React, { useState } from "react"
 import { Button } from "@material-ui/core"
-import {  useHistory } from "react-router-dom"
+import { useHistory } from "react-router-dom"
 import TextField from "@material-ui/core/TextField"
 import Dialog from "@material-ui/core/Dialog"
 import DialogActions from "@material-ui/core/DialogActions"
 import DialogContent from "@material-ui/core/DialogContent"
 import DialogTitle from "@material-ui/core/DialogTitle"
-
-import { addTicket } from "./ticketService"
+import { addTicketAction, fetchAllTickets } from "./ticketAction"
+import { useDispatch } from "react-redux"
 
 export default function AddTicket() {
 	const [open, setOpen] = React.useState(false)
 	const [error, setError] = React.useState("")
 
-	const initialValue = [
-		{
-			ticket_no: {},
-			ticket_title: {},
-			ticket_desc: {},
-		},
-	]
+	const initialValue = []
 
-	// const validationSchema = Yup.object().shape({
-	// 	title: Yup.string()
-	// 		.test("len", "The title must be between 3 and 50 characters.", (val) => val && val.toString().length >= 3 && val.toString().length <= 50)
-	// 		.required("This field is required!"),
-	// 	desc: Yup.string()
-	// 		.test("len", "The desc must be between 3 and 200 characters.", (val) => val && val.toString().length >= 3 && val.toString().length <= 200)
-	// 		.required("This field is required!"),
-	// })
-
+	const dispatch = useDispatch()
 	const [ticket, setTicket] = useState(initialValue)
 	const { ticket_title, ticket_desc } = ticket
 	let history = useHistory()
@@ -54,7 +40,8 @@ export default function AddTicket() {
 		const user = JSON.parse(localStorage.getItem("user"))
 		if (user) {
 			ticket.authorId = user.id
-			await addTicket(ticket)
+			dispatch(addTicketAction(ticket))
+			dispatch(fetchAllTickets())
 			history.push("/ticket")
 			setOpen(false)
 		} else {

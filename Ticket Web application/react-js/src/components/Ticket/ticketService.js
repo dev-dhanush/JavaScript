@@ -24,10 +24,6 @@ export const getAllTicket = async () => {
 		})
 }
 
-export const addTicket = async (ticket) => {
-	return await axios.post(process.env.REACT_APP_API + "ticket/create", ticket, { headers: authHeader() })
-}
-
 export const deleteTicket = async (id) => {
 	return await axios.put(process.env.REACT_APP_API + "ticket/delete/" + id, { headers: authHeader() })
 }
@@ -35,3 +31,8 @@ export const deleteTicket = async (id) => {
 export const editTicketService = async (id, ticket) => {
 	return await axios.put(process.env.REACT_APP_API + "ticket/update/" + id, ticket, { headers: authHeader() })
 }
+
+export const addTicketService = async ( ticket) => {
+	return await axios.post(process.env.REACT_APP_API + "ticket/create", ticket, { headers: authHeader() })
+}
+

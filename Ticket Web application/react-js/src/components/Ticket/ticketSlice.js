@@ -28,9 +28,7 @@ const ticketListSlice = createSlice({
 			state.error = payload
 		},
 		updateTicketSuccess: (state, action) => {
-			console.log(action.payload)
 			state.tickets = state.tickets.map((ticket) => {
-				console.log(ticket.ticket_no)
 				if (ticket.ticket_no === action.payload.ticket_no) {
 					return {...ticket,...action.payload}
 				} else {
@@ -40,6 +38,13 @@ const ticketListSlice = createSlice({
 			state.isLoading = false
 		},
 		updateTicketFail: (state, { payload }) => {
+			state.isLoading = false
+			state.error = payload
+		},
+		addTicketSuccess: (state, action) => {
+			state.tickets.push(action.payload)
+		},
+		addTicketFail: (state, { payload }) => {
 			state.isLoading = false
 			state.error = payload
 		},
@@ -89,6 +94,6 @@ const ticketListSlice = createSlice({
 
 const { reducer, actions } = ticketListSlice
 
-export const { updateTicketFail, updateTicketSuccess, fetchTicketLoading, deleteTicket, fetchTicketSuccess, fetchTicketFail, fetchSingleTicketLoading, fetchSingleTicketSuccess, fetchSingleTicketFail, replyTicketLoading, replyTicketSuccess, replyTicketFail, closeTicketLoading, closeTicketSuccess, closeTicketFail, resetResponseMsg } = actions
+export const { updateTicketFail, updateTicketSuccess, fetchTicketLoading,addTicketFail,addTicketSuccess, deleteTicket, fetchTicketSuccess, fetchTicketFail, fetchSingleTicketLoading, fetchSingleTicketSuccess, fetchSingleTicketFail, replyTicketLoading, replyTicketSuccess, replyTicketFail, closeTicketLoading, closeTicketSuccess, closeTicketFail, resetResponseMsg } = actions
 
 export default reducer
