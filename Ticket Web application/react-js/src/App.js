@@ -11,6 +11,7 @@ import Home from "./components/Home"
 import Profile from "./components/auth/Profile"
 
 import { logout } from "./components/auth/authSlice"
+import AddTicket from "./components/Ticket/AddTicket"
 
 const App = () => {
 	const { user: currentUser } = useSelector((state) => state.auth)
@@ -71,6 +72,7 @@ const App = () => {
 						<Route exact path="/login" component={Login} />
 						<Route exact path="/register" component={Register} />
 						<Route exact path="/profile" component={Profile} />
+						<Route exact path="/addTicket" component={AddTicket} />
 					</Switch>
 				</div>
 			</div>

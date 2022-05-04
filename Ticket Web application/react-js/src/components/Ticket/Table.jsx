@@ -16,7 +16,7 @@ import Tooltip from "@material-ui/core/Tooltip"
 import FormControlLabel from "@material-ui/core/FormControlLabel"
 import Switch from "@material-ui/core/Switch"
 import DeleteIcon from "@material-ui/icons/Delete"
-
+	
 import AddTicket from "./AddTicket"
 import EditTicket from "./EditTicket"
 import { deleteTic, fetchAllTickets } from "./ticketAction"
@@ -119,6 +119,10 @@ export default function EnhancedTable() {
 	const { tickets: rows } = useSelector((state) => state.ticket)
 	const dispatch = useDispatch()
 
+	useEffect(() => {
+		dispatch(fetchAllTickets())
+	}, [dispatch])
+
 	const handleRequestSort = (event, property) => {
 		const isAsc = orderBy === property && order === "asc"
 		setOrder(isAsc ? "desc" : "asc")
@@ -141,7 +145,6 @@ export default function EnhancedTable() {
 		dispatch(deleteTic(id))
 		dispatch(fetchAllTickets())
 	}
-
 	const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage)
 
 	return (

@@ -28,9 +28,13 @@ const ticketListSlice = createSlice({
 			state.error = payload
 		},
 		updateTicketSuccess: (state, action) => {
+			console.log(action.payload)
 			state.tickets = state.tickets.map((ticket) => {
-				if (ticket.authorId === action.payload.authorId) {
-					ticket = action.payload
+				console.log(ticket.ticket_no)
+				if (ticket.ticket_no === action.payload.ticket_no) {
+					return {...ticket,...action.payload}
+				} else {
+					return ticket
 				}
 			})
 			state.isLoading = false

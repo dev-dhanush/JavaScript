@@ -31,7 +31,7 @@ export const updateTicketAction = (id, ticket) => async (dispatch) => {
 	dispatch(fetchTicketLoading())
 	try {
 		const result = await editTicketService(id, ticket)
-		result.data && dispatch(updateTicketSuccess(result.data.data.ticket_no))
+		result.data && dispatch(updateTicketSuccess(result.data.data))
 	} catch (error) {
 		dispatch(updateTicketFail())
 	}

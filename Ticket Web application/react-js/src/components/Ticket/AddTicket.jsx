@@ -1,6 +1,6 @@
 import React, { useState } from "react"
 import { Button } from "@material-ui/core"
-import { useHistory } from "react-router-dom"
+import {  useHistory } from "react-router-dom"
 import TextField from "@material-ui/core/TextField"
 import Dialog from "@material-ui/core/Dialog"
 import DialogActions from "@material-ui/core/DialogActions"
@@ -42,35 +42,32 @@ export default function AddTicket() {
 		setError("")
 	}
 
-	const handleClickOpen = () => {
-		setOpen(true)
-	}
+	// const handleClickOpen = () => {
+	// 	setOpen(true)
+	// }
 
 	const handleClose = () => {
 		setOpen(false)
+		history.push("/ticket")
 	}
 
 	const addTicketDetails = async () => {
-		// setSuccessful(false)
 		const user = JSON.parse(localStorage.getItem("user"))
 		if (user) {
 			ticket.authorId = user.id
 			await addTicket(ticket)
-			// setSuccessful(true)
-			window.location.reload() // removed with useState
+			history.push("/ticket")
 		} else {
 			history.push("/signin")
-			// setSuccessful(false)
 		}
 	}
 
 	return (
 		<div>
-			<Button variant="outlined" style={{ fontSize: 15 }} onClick={handleClickOpen} color="primary">
+			{/* <Button variant="outlined" style={{ fontSize: 15 }} onClick={handleClickOpen} color="primary">
 				Add Ticket
-			</Button>
+			</Button> */}
 
-			{/* <Formik initialValues={initialValue} validationSchema={validationSchema}> */}
 			<Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
 				<DialogTitle id="form-dialog-title">Add Ticket</DialogTitle>
 				<DialogContent>
@@ -88,7 +85,6 @@ export default function AddTicket() {
 					</Button>
 				</DialogActions>
 			</Dialog>
-			{/* </Formik> */}
 		</div>
 	)
 }
