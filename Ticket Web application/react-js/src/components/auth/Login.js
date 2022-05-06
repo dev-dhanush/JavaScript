@@ -52,7 +52,7 @@ const Login = (props) => {
 	return (
 		<div className="col-md-12 login-form">
 			<div className="card card-container">
-				<img alt="profile-img" className="profile-img-card" />
+			<img src="//ssl.gstatic.com/accounts/ui/avatar_2x.png" alt="profile-img" className="profile-img-card" />
 				<Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={handleLogin}>
 					<Form>
 						<div className="form-group">
