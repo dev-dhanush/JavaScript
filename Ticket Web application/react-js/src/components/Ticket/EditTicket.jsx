@@ -9,17 +9,14 @@ import DialogTitle from "@material-ui/core/DialogTitle"
 import EditCircleRoundedIcon from "@material-ui/icons/Edit"
 import { getTicket as getTicketService } from "./ticketService"
 import { updateTicketAction } from "./ticketAction"
-import { useHistory } from "react-router-dom"
 
 const EditTicket = (props) => {
 	const [open, setOpen] = React.useState(false)
-	const initialValue = [
-		{
-			ticket_no: "",
-			ticket_desc: "",
-		},
-	]
-	let history = useHistory()
+	const initialValue = {
+		ticket_no: "",
+		ticket_desc: "",
+	}
+
 	const [ticket, setTicket] = useState(initialValue)
 	const { ticket_title, ticket_desc } = ticket
 	const dispatch = useDispatch()
@@ -45,7 +42,12 @@ const EditTicket = (props) => {
 	useEffect(() => {
 		if (open) {
 			const existingTicket = getTicketService(id)
-			existingTicket.then((data) => setTicket(data.data[0])).catch((err) => console.log(err))
+			existingTicket
+				.then((data) => {
+					const { ticket_title, ticket_desc } = data.data[0]
+					setTicket({ ticket_title, ticket_desc })
+				})
+				.catch((err) => console.log(err))
 		}
 	}, [id, open])
 

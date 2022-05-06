@@ -16,14 +16,13 @@ import Tooltip from "@material-ui/core/Tooltip"
 import FormControlLabel from "@material-ui/core/FormControlLabel"
 import Switch from "@material-ui/core/Switch"
 import DeleteIcon from "@material-ui/icons/Delete"
-	
+
 import AddTicket from "./AddTicket"
 import EditTicket from "./EditTicket"
 import { deleteTic, fetchAllTickets } from "./ticketAction"
 
 function descendingComparator(a, b, orderBy) {
-	if (!a || !b) return 0
-	if (b.orderBy < a.orderBy) {
+	if (b[orderBy] < a[orderBy]) {
 		return -1
 	}
 	if (b[orderBy] > a[orderBy]) {
@@ -111,11 +110,11 @@ const useStyles = makeStyles((theme) => ({
 
 export default function EnhancedTable() {
 	const classes = useStyles()
-	const [order, setOrder] = React.useState("asc")
+	const [order, setOrder] = React.useState("desc")
 	const [orderBy, setOrderBy] = React.useState("ticket_no")
 	const [page, setPage] = React.useState(0)
-	const [dense, setDense] = React.useState(false)
-	const [rowsPerPage, setRowsPerPage] = React.useState(5)
+	const [dense, setDense] = React.useState(true)
+	const [rowsPerPage, setRowsPerPage] = React.useState(10)
 	const { tickets: rows } = useSelector((state) => state.ticket)
 	const dispatch = useDispatch()
 
@@ -192,7 +191,7 @@ export default function EnhancedTable() {
 									)
 								})}
 							{emptyRows > 0 && (
-								<TableRow style={{ height: (dense ? 20 : 53) * emptyRows }}>
+								<TableRow style={{ height: (dense ? 33 : 53) * emptyRows }}>
 									<TableCell colSpan={6} />
 								</TableRow>
 							)}
