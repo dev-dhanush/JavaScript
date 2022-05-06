@@ -17,7 +17,7 @@ const ticketListSlice = createSlice({
 			state.isLoading = true
 		},
 		deleteTicket: (state, action) => {
-			state.tickets = state.tickets.filter((tic) => tic === action.payload.ticket)
+			state.tickets = state.tickets.filter((tic) => tic.ticket_no !== action.payload)
 		},
 		fetchTicketSuccess: (state, action) => {
 			state.tickets = action.payload
@@ -28,14 +28,23 @@ const ticketListSlice = createSlice({
 			state.error = payload
 		},
 		updateTicketSuccess: (state, action) => {
-			state.tickets = state.tickets.map(ticket => {
-				if(ticket.authorId === action.payload.authorId){
-					ticket = action.payload
+			state.tickets = state.tickets.map((ticket) => {
+				if (ticket.ticket_no === action.payload.ticket_no) {
+					return {...ticket,...action.payload}
+				} else {
+					return ticket
 				}
 			})
 			state.isLoading = false
 		},
 		updateTicketFail: (state, { payload }) => {
+			state.isLoading = false
+			state.error = payload
+		},
+		addTicketSuccess: (state, action) => {
+			state.tickets.push(action.payload)
+		},
+		addTicketFail: (state, { payload }) => {
 			state.isLoading = false
 			state.error = payload
 		},
@@ -85,6 +94,6 @@ const ticketListSlice = createSlice({
 
 const { reducer, actions } = ticketListSlice
 
-export const { updateTicketFail, updateTicketSuccess,fetchTicketLoading, deleteTicket, fetchTicketSuccess, fetchTicketFail, fetchSingleTicketLoading, fetchSingleTicketSuccess, fetchSingleTicketFail, replyTicketLoading, replyTicketSuccess, replyTicketFail, closeTicketLoading, closeTicketSuccess, closeTicketFail, resetResponseMsg } = actions
+export const { updateTicketFail, updateTicketSuccess, fetchTicketLoading,addTicketFail,addTicketSuccess, deleteTicket, fetchTicketSuccess, fetchTicketFail, fetchSingleTicketLoading, fetchSingleTicketSuccess, fetchSingleTicketFail, replyTicketLoading, replyTicketSuccess, replyTicketFail, closeTicketLoading, closeTicketSuccess, closeTicketFail, resetResponseMsg } = actions
 
 export default reducer

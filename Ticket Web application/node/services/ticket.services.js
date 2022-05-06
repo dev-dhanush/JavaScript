@@ -1,9 +1,11 @@
-const { PrismaClient } = require("@prisma/client")
-const prisma = new PrismaClient()
-const createError = require("http-errors")
-require("dotenv").config()
+import client from "@prisma/client"
+const { PrismaClient } = client
+const prisma = new PrismaClient({ rejectOnNotFound: true })
+import httpError from "http-errors"
+const { NotAcceptable, NotFound } = httpError
+import "dotenv/config"
 
-exports.create = async (data) => {
+export async function createService(data) {
 	console.log(data)
 	try {
 		let ticket = await prisma.ticket.create({
@@ -16,11 +18,11 @@ exports.create = async (data) => {
 		return ticket
 	} catch (error) {
 		console.log(error)
-		throw createError.NotAcceptable("Ticket is not created. Try again later..")
+		throw NotAcceptable("Ticket is not created. Try again later..")
 	}
 }
 
-exports.update = async (id, data) => {
+export async function updateService(id, data) {
 	try {
 		let ticket = await prisma.ticket.update({
 			where: {
@@ -30,12 +32,12 @@ exports.update = async (id, data) => {
 		})
 		return ticket
 	} catch (error) {
-		console.log(error);
-		throw createError.NotAcceptable("Ticket is not updated. Try again later..")
+		console.log(error)
+		throw NotAcceptable("Ticket is not updated. Try again later..")
 	}
 }
 
-exports.deleteTicket = async (id) => {
+export async function deleteTicketService(id) {
 	try {
 		let ticket = await prisma.ticket.update({
 			where: {
@@ -45,32 +47,34 @@ exports.deleteTicket = async (id) => {
 		})
 		return ticket
 	} catch (error) {
-		console.log(error);
-		throw createError.NotAcceptable("Ticket is not deleted. Try again later..")
+		console.log(error)
+		throw NotAcceptable("Ticket is not deleted. Try again later..")
 	}
 }
 
-exports.getAll = async () => {
+export async function getAllService() {
 	try {
 		let ticket = await prisma.ticket.findMany({
 			where: {
 				isDeleted: false,
 			},
+			include: {
+				author:true
+			},
 		})
-		console.log(ticket)
 		return ticket
 	} catch (error) {
 		console.log(error)
-		throw createError.NotFound("NO Ticket is available. Try again later..")
+		throw NotFound("NO Ticket is available. Try again later..")
 	}
 }
 
-exports.getById = async (id) => {
+export async function getByIdService(id) {
 	try {
-		let ticket = await prisma.ticket.findUnique({ where: { ticket_no: Number(id), isDeleted: false } })
+		let ticket = await prisma.ticket.findMany({ where: { ticket_no: Number(id), isDeleted: false } })
 		return ticket
 	} catch (error) {
 		console.log(error)
-		throw createError.NotFound("Ticket is not available. Create and Try again..")
+		throw NotFound("Ticket is not available. Create and Try again..")
 	}
 }

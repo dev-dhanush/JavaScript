@@ -1,6 +1,6 @@
 import React from "react"
 
-import AllTickets from "./AllTicket"
+import AllTickets from "../components/Ticket/AllTicket"
 
 const Home = () => {
 	return (

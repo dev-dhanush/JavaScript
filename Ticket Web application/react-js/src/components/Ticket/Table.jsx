@@ -1,4 +1,5 @@
-import React from "react"
+import React, { useEffect } from "react"
+import { useDispatch, useSelector } from "react-redux"
 import PropTypes from "prop-types"
 import { makeStyles } from "@material-ui/core/styles"
 import Table from "@material-ui/core/Table"
@@ -15,12 +16,10 @@ import Tooltip from "@material-ui/core/Tooltip"
 import FormControlLabel from "@material-ui/core/FormControlLabel"
 import Switch from "@material-ui/core/Switch"
 import DeleteIcon from "@material-ui/icons/Delete"
+
 import AddTicket from "./AddTicket"
 import EditTicket from "./EditTicket"
-import { useDispatch, useSelector } from "react-redux"
-import { deleteTic } from "../slices/ticketAction"
-
-// import { getTickets } from "../slices/ticket"
+import { deleteTic, fetchAllTickets } from "./ticketAction"
 
 function descendingComparator(a, b, orderBy) {
 	if (b[orderBy] < a[orderBy]) {
@@ -36,8 +35,6 @@ function getComparator(order, orderBy) {
 	return order === "desc" ? (a, b) => descendingComparator(a, b, orderBy) : (a, b) => -descendingComparator(a, b, orderBy)
 }
 
-// let rows = [{ ticket_no: 1, ticket_title: "Demo title", title_desc: "Descripction", authorId: 1 }]
-
 function stableSort(array, comparator) {
 	const stabilizedThis = array.map((el, index) => [el, index])
 	stabilizedThis.sort((a, b) => {
@@ -52,7 +49,7 @@ const headCells = [
 	{ id: "ticket_no", numeric: false, disablePadding: true, label: "Ticket NO" },
 	{ id: "ticket_title", numeric: true, disablePadding: false, label: "Title" },
 	{ id: "ticket_desc", numeric: true, disablePadding: false, label: "Desc" },
-	{ id: "authorId", numeric: true, disablePadding: false, label: "Author id" },
+	{ id: "author", numeric: true, disablePadding: false, label: "Author" },
 	{ id: "delete", numeric: true, disablePadding: false, label: "Delete" },
 	{ id: "edit", numeric: true, disablePadding: false, label: "Edit" },
 ]
@@ -113,39 +110,23 @@ const useStyles = makeStyles((theme) => ({
 
 export default function EnhancedTable() {
 	const classes = useStyles()
-	const [order, setOrder] = React.useState("asc")
+	const [order, setOrder] = React.useState("desc")
 	const [orderBy, setOrderBy] = React.useState("ticket_no")
-	const [selected, setSelected] = React.useState([])
 	const [page, setPage] = React.useState(0)
-	const [dense, setDense] = React.useState(false)
-	const [rowsPerPage, setRowsPerPage] = React.useState(5)
+	const [dense, setDense] = React.useState(true)
+	const [rowsPerPage, setRowsPerPage] = React.useState(10)
 	const { tickets: rows } = useSelector((state) => state.ticket)
 	const dispatch = useDispatch()
+
+	useEffect(() => {
+		dispatch(fetchAllTickets())
+	}, [dispatch])
 
 	const handleRequestSort = (event, property) => {
 		const isAsc = orderBy === property && order === "asc"
 		setOrder(isAsc ? "desc" : "asc")
 		setOrderBy(property)
 	}
-
-	const handleClick = (event, name) => {
-		// const selectedIndex = selected.indexOf(name);
-		// let newSelected = [];
-		// if (selectedIndex === -1) {
-		//   newSelected = newSelected.concat(selected, name);
-		// } else if (selectedIndex === 0) {
-		//   newSelected = newSelected.concat(selected.slice(1));
-		// } else if (selectedIndex === selected.length - 1) {
-		//   newSelected = newSelected.concat(selected.slice(0, -1));
-		// } else if (selectedIndex > 0) {
-		//   newSelected = newSelected.concat(
-		//     selected.slice(0, selectedIndex),
-		//     selected.slice(selectedIndex + 1),
-		//   );
-		// }
-		// setSelected(newSelected);
-	}
-
 	const handleChangePage = (event, newPage) => {
 		setPage(newPage)
 	}
@@ -161,51 +142,31 @@ export default function EnhancedTable() {
 
 	const handleDelete = (id) => {
 		dispatch(deleteTic(id))
-		window.location.reload()
+		dispatch(fetchAllTickets())
 	}
-
-	// const isSelected = (name) => selected.indexOf(name) !== -1;
 	const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage)
 
 	return (
 		<div className={classes.root}>
 			<Paper className={classes.paper}>
-				{/* <EnhancedTableToolbar /> */}
 				<TableContainer>
 					<Table className={classes.table} aria-labelledby="tableTitle" size={dense ? "small" : "medium"} aria-label="enhanced table">
-						<EnhancedTableHead
-							classes={classes}
-							// numSelected={selected.length}
-							order={order}
-							orderBy={orderBy}
-							// onSelectAllClick={handleSelectAllClick}
-							onRequestSort={handleRequestSort}
-							rowCount={rows.length}
-						/>
+						<EnhancedTableHead classes={classes} order={order} orderBy={orderBy} onRequestSort={handleRequestSort} rowCount={rows.length} />
 						<TableBody>
 							{stableSort(rows, getComparator(order, orderBy))
 								.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
 								.map((row, index) => {
-									// const isItemSelected = isSelected(row.ticket_no);
 									const labelId = `enhanced-table-checkbox-${index}`
 
 									return (
-										<TableRow
-											hover
-											onClick={(event) => handleClick(event, row.ticket_no)}
-											role="checkbox"
-											// aria-checked={isItemSelected}
-											tabIndex={-1}
-											key={row.ticket_no}
-											// selected={isItemSelected}
-										>
+										<TableRow hover role="checkbox" tabIndex={-1} key={row.ticket_no}>
 											<TableCell padding="checkbox"></TableCell>
 											<TableCell component="th" id={labelId} scope="row" padding="none">
 												{row.ticket_no}
 											</TableCell>
 											<TableCell align="right">{row.ticket_title}</TableCell>
 											<TableCell align="right">{row.ticket_desc}</TableCell>
-											<TableCell align="right">{row.authorId}</TableCell>
+											<TableCell align="right">{row.author.username}</TableCell>
 											<TableCell align="right">
 												<Tooltip
 													onClick={() => {
@@ -213,7 +174,7 @@ export default function EnhancedTable() {
 													}}
 													title="Delete"
 												>
-													<IconButton style={{ padding: 0, margin: 0 }} aria-label="delete">
+													<IconButton aria-label="delete">
 														<DeleteIcon />
 													</IconButton>
 												</Tooltip>
@@ -241,7 +202,6 @@ export default function EnhancedTable() {
 			</Paper>
 			<div style={{ display: "flex", justifyContent: "space-around", flexDirection: "row" }}>
 				<FormControlLabel control={<Switch checked={dense} onChange={handleChangeDense} />} label="Dense padding" />
-				{/* <AddCircleRoundedIcon color="primary" style={{ fontSize: 60 }} /> */}
 				<AddTicket />
 			</div>
 		</div>
