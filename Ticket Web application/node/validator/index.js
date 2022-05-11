@@ -1,5 +1,5 @@
 export default function userSignupValidator(req, res, next) {
-	req.check("name", "Name is required")
+	req.check("username", "User Name is required")
 	req.check("email", "Email must be between 3 to 32 characters")
 		.matches(/.+\@.+\..+/)
 		.withMessage("Email must contain @")
