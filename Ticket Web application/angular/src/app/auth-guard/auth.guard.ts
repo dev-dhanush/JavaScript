@@ -38,6 +38,8 @@ export class AuthGuard implements CanActivate {
     state: RouterStateSnapshot
   ): Observable<boolean> | Promise<boolean> | boolean {
     if (!this.authService.isLoggedIn()) {
+      sessionStorage.removeItem('auth-user');
+      sessionStorage.removeItem('auth-token');
       this.router.navigate(['/login']); // go to login if not authenticated
       return false;
     }

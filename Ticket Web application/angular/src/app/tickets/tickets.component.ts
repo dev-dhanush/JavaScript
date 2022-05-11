@@ -26,6 +26,8 @@ export class TicketsComponent implements OnInit {
   dataSource = new MatTableDataSource<Ticket>();
   public ticket: Array<Object>;
 
+  currentUser = JSON.parse(sessionStorage.getItem('auth-user')!)
+
   constructor(
     private _liveAnnouncer: LiveAnnouncer,
     private ticketService: TicketService,
@@ -33,13 +35,13 @@ export class TicketsComponent implements OnInit {
   ) {
     this.fetchTicket();
   }
-
-  handleEdit = (title: String, desc: String,id:Number) => {
+  
+  handleEdit = (title: String, desc: String, id: Number) => {
     this.dialog.open(UpdateTicketComponent, {
       data: {
         title_title: title,
         title_desc: desc,
-        edit: true,
+        editId: id,
       },
     });
   };
@@ -51,10 +53,10 @@ export class TicketsComponent implements OnInit {
       },
     });
   }
-
+  
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
-
+  
   ngOnInit(): void {
     this.fetchTicket();
   }
@@ -68,8 +70,8 @@ export class TicketsComponent implements OnInit {
   fetchTicket = () => {
     this.ticketService.getAllTicketService().subscribe((data: any) => {
       this.dataSource = new MatTableDataSource<Ticket>(data['data']);
-      this.dataSource.paginator = this.paginator;
 
+      this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
     });
   };

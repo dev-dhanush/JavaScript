@@ -21,12 +21,7 @@ export class CreateTicketComponent implements OnInit {
     private ticketService: TicketService,
     private router: Router
   ) {}
-  ngOnInit(): void {
-    // this.add_ticket = {
-    //   ticket_title: this.data.ticket_title,
-    //   ticket_desc: this.data.ticket_desc,
-    // };
-  }
+  ngOnInit(): void {}
 
   add_ticket = new FormGroup({
     ticket_title: new FormControl(),
@@ -41,12 +36,16 @@ export class CreateTicketComponent implements OnInit {
   }
 
   handleSubmit = (form: any) => {
-    const response = this.ticketService.createTicketService(form.value);
-    response.subscribe((data: any) => {
-      if (data['data']) {
-        this.ticketService.getAllTicketService();
-        this.reloadCurrentRoute();
-      }
-    });
+    try {
+      const response = this.ticketService.createTicketService(form.value);
+      response.subscribe((data: any) => {
+        if (data['data']) {
+          this.ticketService.getAllTicketService();
+          this.reloadCurrentRoute();
+        }
+      });
+    } catch (error) {
+      console.log(error);
+    }
   };
 }

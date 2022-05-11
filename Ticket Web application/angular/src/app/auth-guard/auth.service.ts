@@ -32,8 +32,9 @@ export class AuthService {
 
   isLoggedIn() {
     const token = sessionStorage.getItem('auth-token');
+    const user = sessionStorage.getItem('auth-user');
     // get token from local storage
 
-    return token ? true : false;
+    return token && user ? true : false;
   }
 }

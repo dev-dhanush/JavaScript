@@ -92,9 +92,16 @@
           <button
             mat-mini-fab
             mat-stroked-button
-            (click)="handleEdit(element.ticket_title, element.ticket_desc,element.ticket_no)"
+            (click)="
+              handleEdit(
+                element.ticket_title,
+                element.ticket_desc,
+                element.ticket_no
+              )
+            "
             color="primary"
             aria-label="Example icon button with a Edit icon"
+            [disabled]="element.authorId === currentUser['id'] ? false : true"
           >
             <mat-icon>edit</mat-icon>
           </button>
@@ -115,6 +122,7 @@
             mat-mini-fab
             color="warn"
             aria-label="Example icon button with a Delete icon"
+            [disabled]="element.authorId === currentUser['id'] ? false : true"
           >
             <mat-icon (click)="handleDelete(element.ticket_no)"
               >delete</mat-icon
