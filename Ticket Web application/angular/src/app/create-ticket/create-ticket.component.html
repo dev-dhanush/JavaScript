@@ -2,7 +2,7 @@
   <mat-form-field class="example-full-width" appearance="fill">
     <mat-label>Ticket Tile</mat-label>
     
-    <input formControlName="ticket_title" matInput #ticket_title maxlength="256" />
+    <input required formControlName="ticket_title" matInput #ticket_title maxlength="256" />
     
     <mat-hint align="start"> </mat-hint>
     <mat-hint align="end">{{ ticket_title.value.length }} / 256</mat-hint>
@@ -11,7 +11,7 @@
   <mat-form-field class="example-full-width" appearance="fill">
     <mat-label>Ticket Description</mat-label>
 
-    <input formControlName="ticket_desc" matInput #ticket_desc maxlength="256" />
+    <input required formControlName="ticket_desc" matInput #ticket_desc maxlength="256" />
     
     <mat-hint align="start"> </mat-hint>
     <mat-hint align="end">{{ ticket_desc.value.length }} / 256</mat-hint>

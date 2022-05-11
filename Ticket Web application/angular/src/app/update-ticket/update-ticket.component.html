@@ -2,6 +2,7 @@
   [formGroup]="update_ticket"
   (ngSubmit)="handleSubmit(update_ticket)"
   class="example-form"
+  novalidate
 >
   <mat-form-field class="example-full-width" appearance="fill">
     <mat-label>Ticket Tile</mat-label>
@@ -12,6 +13,7 @@
       matInput
       #ticket_title
       maxlength="256"
+      required
     />
 
     <mat-hint align="start"> </mat-hint>
@@ -27,6 +29,7 @@
       matInput
       #ticket_desc
       maxlength="256"
+      required
     />
 
     <mat-hint align="start"> </mat-hint>

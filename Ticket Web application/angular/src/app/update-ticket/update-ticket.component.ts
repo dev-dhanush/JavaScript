@@ -1,12 +1,12 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { TicketService } from '../_services/ticket.service';
 
 export interface DialogData {
-  ticket_title: '';
-  ticket_desc: '';
+  ticket_title: String;
+  ticket_desc: String;
   editId: Number;
 }
 
@@ -15,14 +15,19 @@ export interface DialogData {
   templateUrl: './update-ticket.component.html',
   styleUrls: ['./update-ticket.component.css'],
 })
-export class UpdateTicketComponent implements OnInit, Inject {
+export class UpdateTicketComponent implements Inject {
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: DialogData,
     private ticketService: TicketService,
     private router: Router
-  ) {}
+  ) {
+    this.update_ticket.setValue({
+      ticket_title: data.ticket_title,
+      ticket_desc: data.ticket_desc,
+    });
+  }
   message: String;
-  currentData = this.data;
+  currentUser = this.data
   ticket_title: String;
   ticket_desc: String;
   token: any;
@@ -43,7 +48,7 @@ export class UpdateTicketComponent implements OnInit, Inject {
     try {
       const response = this.ticketService.updateTicketService(
         form.value,
-        this.currentData.editId
+        this.data.editId
       );
       response.subscribe((data: any) => {
         if (data['data']) {
@@ -51,10 +56,9 @@ export class UpdateTicketComponent implements OnInit, Inject {
           this.reloadCurrentRoute();
         }
       });
-    } catch (error:any) {
-      this.message = error['status']
+    } catch (error: any) {
+      this.message = error['status'];
     }
   };
 
-  ngOnInit(): void {}
 }

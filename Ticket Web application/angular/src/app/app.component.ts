@@ -21,7 +21,6 @@ export class AppComponent {
 
   ngOnInit(): void {
     this.isLoggedIn = !!this.tokenStorageService.getToken();
-    console.log(this.isLoggedIn);
     
 
     if (this.isLoggedIn) {
