@@ -21,7 +21,6 @@ import AddTicket from "./AddTicket"
 import EditTicket from "./EditTicket"
 import { deleteTic, fetchAllTickets } from "./ticketAction"
 import { logout } from "../slice/authSlice"
-// import { useNavigate } from "react-router-dom"
 
 function descendingComparator(a, b, orderBy) {
 	if (b[orderBy] < a[orderBy]) {
@@ -142,13 +141,11 @@ export default function EnhancedTable() {
 	const dispatch = useDispatch()
 
 	const errorState = useSelector((state) => state.ticket.error)
-	// const navigate = useNavigate()
 	const [error, setError] = React.useState("")
 	const logOut = useCallback(() => {
 		console.log("logout called fun")
 		dispatch(logout())
 		window.location.href = "/login"
-		// navigate("/login")
 	}, [dispatch])
 
 	useEffect(() => {

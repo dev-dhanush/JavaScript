@@ -43,7 +43,6 @@ const Login = (props) => {
 					return dispatch(login_rejected(data.error))
 				}
 				dispatch(login_fulfilled(data.data))
-				// navigate("/")
 				props.history.push("/")
 			})
 			.catch((error) => {

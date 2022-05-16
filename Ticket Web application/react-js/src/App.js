@@ -41,11 +41,6 @@ const App = () => {
 
 					{currentUser ? (
 						<div className="navbar-nav ml-auto">
-							{/* <li className="nav-item">
-								<Link to={"/profile"} className="nav-link">
-									{currentUser.username}
-								</Link>
-							</li> */}
 							<li className="nav-item">
 								<a
 									href="/login"
@@ -79,7 +74,6 @@ const App = () => {
 						<Route exact path="/ticket" element={<Home/>} />
 						<Route exact path="/login" element={<Login/>} />
 						<Route exact path="/register" element={<Register/>} />
-						{/* <Route exact path="/profile" element={<Profile/>} /> */}
 					</Routes>
 				</div>
 			</div>

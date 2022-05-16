@@ -8,10 +8,6 @@ const messageSlice = createSlice({
 	reducers: {
 		setMessage: (state, action) => {
 			state.message.message = action.payload
-			return console.log(
-				"updateing message message SLice =>",
-				action.payload
-			)
 		},
 		clearMessage: (state) => {
 			state.message = {}

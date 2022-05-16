@@ -14,23 +14,10 @@ import { useDispatch } from "react-redux"
 import { useFormik } from "formik"
 
 export default function AddTicket(props) {
-	const [open, setOpen] = React.useState(false)
-	const [error, setError] = React.useState("")
-
-	const initialValue = []
+	const [open, setOpen] = useState(false)
 
 	const dispatch = useDispatch()
-	const [ticket, setTicket] = useState(initialValue)
-	const { ticket_title, ticket_desc } = ticket
 	let navigate = useNavigate()
-
-	const onValueChange = (e) => {
-		if (e.target.value === "") {
-			setError(e.target.name, " can not be empty")
-		}
-		setTicket({ ...ticket, [e.target.name]: e.target.value })
-		setError("")
-	}
 
 	const handleClickOpen = () => {
 		setOpen(true)
@@ -39,19 +26,6 @@ export default function AddTicket(props) {
 	const handleClose = () => {
 		setOpen(false)
 	}
-
-	// const addTicketDetails = async () => {
-	// 	const user = JSON.parse(localStorage.getItem("user"))
-	// 	if (user) {
-	// 		ticket.authorId = user.id
-	// 		dispatch(addTicketAction(ticket))
-	// 		dispatch(fetchAllTickets())
-	// 		navigate("/ticket")
-	// 		setOpen(false)
-	// 	} else {
-	// 		navigate("/signin")
-	// 	}
-	// }
 
 	const formik = useFormik({
 		initialValues: {

@@ -40,8 +40,6 @@ export const fetchAllTickets = () => async (dispatch) => {
 					return err
 				})
 			if (result.data === undefined && result.isAxiosError) {
-				// console.log("result", result.response.statusText)
-				// console.log("result", result.toJSON())
 				return dispatch(fetchTicketFail(result.response.statusText))
 			} else {
 				result.data.length && dispatch(fetchTicketSuccess(result.data))
