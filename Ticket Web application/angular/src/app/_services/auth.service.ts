@@ -12,6 +12,7 @@ const httpOptions = {
   providedIn: 'root'
 })
 export class AuthService {
+  isLoggedIn:Boolean = false
   constructor(private http: HttpClient) { }
 
   login(email: string, password: string): Observable<any> {

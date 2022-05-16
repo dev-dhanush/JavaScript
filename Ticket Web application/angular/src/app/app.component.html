@@ -2,7 +2,7 @@
   <nav class="navbar navbar-expand navbar-dark bg-dark">
     <a href="#" class="navbar-brand">Token web app</a>
     <a href="/ticket" class="navbar-brand">Tickets</a>
-    <ul class="navbar-nav ml-auto" *ngIf="!this.isLoggedIn">
+    <ul class="navbar-nav ml-auto" *ngIf="!this.authService.isLoggedIn">
       <li class="nav-item">
         <a href="/register" class="nav-link" routerLink="register">Sign Up</a>
       </li>
@@ -11,7 +11,7 @@
       </li>
     </ul>
 
-    <ul class="navbar-nav ml-auto" *ngIf="this.isLoggedIn">
+    <ul class="navbar-nav ml-auto" *ngIf="this.authService.isLoggedIn">
       <li class="nav-item">
         <a href="/profile" class="nav-link" routerLink="profile">{{username}}</a>
       </li>
@@ -22,7 +22,7 @@
   </nav>
 
   <div class="container">
-    <!-- <app-login></app-login> -->
+    <!-- <app-login [isLoggedIn]="isLoggedIn"></app-login> -->
     <router-outlet></router-outlet>
   </div>
 </div>

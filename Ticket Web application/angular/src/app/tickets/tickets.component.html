@@ -1,153 +1,80 @@
-<!-- <mat-card > -->
-  <div style="padding: 5%" class="mat-elevation-z8">
-    <table
-      mat-table
-      [dataSource]="dataSource"
-      matSort
-      matSortActive="ticket_no"
-      matSortDirection="desc"
-      (matSortChange)="announceSortChange($event)"
-      class="mat-elevation-z8"
-    >
-      <!--- Note that these columns can be defined in any order.
-        The actual rendered columns are set as a property on the row definition" -->
+<div style="padding: 5%" class="mat-elevation-z8">
+  <table mat-table [dataSource]="dataSource" matSort matSortActive="ticket_no" matSortDirection="desc"
+    (matSortChange)="announceSortChange($event)" class="mat-elevation-z8">
+    <ng-container matColumnDef="position">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by number">
+        No.
+      </th>
+      <td mat-cell *matCellDef="let element">{{ element.position }}</td>
+    </ng-container>
 
-      <!-- Position Column -->
-      <ng-container matColumnDef="position">
-        <th
-          mat-header-cell
-          *matHeaderCellDef
-          mat-sort-header
-          sortActionDescription="Sort by number"
-        >
-          No.
-        </th>
-        <td mat-cell *matCellDef="let element">{{ element.position }}</td>
-      </ng-container>
+    <ng-container matColumnDef="ticket_no">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by ticket_no">
+        ticket_no
+      </th>
+      <td mat-cell *matCellDef="let element">{{ element.ticket_no }}</td>
+    </ng-container>
 
-      <!-- Name Column -->
-      <ng-container matColumnDef="ticket_no">
-        <th
-          mat-header-cell
-          *matHeaderCellDef
-          mat-sort-header
-          sortActionDescription="Sort by ticket_no"
-        >
-          ticket_no
-        </th>
-        <td mat-cell *matCellDef="let element">{{ element.ticket_no }}</td>
-      </ng-container>
+    <ng-container matColumnDef="ticket_title">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by ticket_title">
+        ticket_title
+      </th>
+      <td mat-cell *matCellDef="let element">{{ element.ticket_title }}</td>
+    </ng-container>
 
-      <!-- Weight Column -->
-      <ng-container matColumnDef="ticket_title">
-        <th
-          mat-header-cell
-          *matHeaderCellDef
-          mat-sort-header
-          sortActionDescription="Sort by ticket_title"
-        >
-          ticket_title
-        </th>
-        <td mat-cell *matCellDef="let element">{{ element.ticket_title }}</td>
-      </ng-container>
+    <ng-container matColumnDef="ticket_desc">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by ticket_desc">
+        ticket_desc
+      </th>
+      <td mat-cell *matCellDef="let element">{{ element.ticket_desc }}</td>
+    </ng-container>
 
-      <!-- Symbol Column -->
-      <ng-container matColumnDef="ticket_desc">
-        <th
-          mat-header-cell
-          *matHeaderCellDef
-          mat-sort-header
-          sortActionDescription="Sort by ticket_desc"
-        >
-          ticket_desc
-        </th>
-        <td mat-cell *matCellDef="let element">{{ element.ticket_desc }}</td>
-      </ng-container>
+    <ng-container matColumnDef="author">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by author">
+        author
+      </th>
+      <td mat-cell *matCellDef="let element">
+        {{ element.author.username }}
+      </td>
+    </ng-container>
 
-      <!-- Symbol Column -->
-      <ng-container matColumnDef="author">
-        <th
-          mat-header-cell
-          *matHeaderCellDef
-          mat-sort-header
-          sortActionDescription="Sort by author"
-        >
-          author
-        </th>
-        <td mat-cell *matCellDef="let element">
-          {{ element.author.username }}
-        </td>
-      </ng-container>
+    <ng-container matColumnDef="edit">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by edit">
+        edit
+      </th>
+      <td mat-cell *matCellDef="let element">
+        <button mat-mini-fab mat-stroked-button (click)="
+            handleEdit(
+              element.ticket_title,
+              element.ticket_desc,
+              element.ticket_no
+            )
+          " color="primary" aria-label="Example icon button with a Edit icon"
+          [disabled]="element.authorId === currentUser['id'] ? false : true">
+          <mat-icon>edit</mat-icon>
+        </button>
+      </td>
+    </ng-container>
 
-      <ng-container matColumnDef="edit">
-        <th
-          mat-header-cell
-          *matHeaderCellDef
-          mat-sort-header
-          sortActionDescription="Sort by edit"
-        >
-          edit
-        </th>
-        <td mat-cell *matCellDef="let element">
-          <button
-            mat-mini-fab
-            mat-stroked-button
-            (click)="
-              handleEdit(
-                element.ticket_title,
-                element.ticket_desc,
-                element.ticket_no
-              )
-            "
-            color="primary"
-            aria-label="Example icon button with a Edit icon"
-            [disabled]="element.authorId === currentUser['id'] ? false : true"
-          >
-            <mat-icon>edit</mat-icon>
-          </button>
-        </td>
-      </ng-container>
+    <ng-container matColumnDef="delete">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by delete">
+        delete
+      </th>
+      <td mat-cell *matCellDef="let element">
+        <button mat-mini-fab color="warn" aria-label="Example icon button with a Delete icon"
+          [disabled]="element.authorId === currentUser['id'] ? false : true" (click)="handleDelete(element.ticket_no)">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+  </table>
 
-      <ng-container matColumnDef="delete">
-        <th
-          mat-header-cell
-          *matHeaderCellDef
-          mat-sort-header
-          sortActionDescription="Sort by delete"
-        >
-          delete
-        </th>
-        <td mat-cell *matCellDef="let element">
-          <button
-            mat-mini-fab
-            color="warn"
-            aria-label="Example icon button with a Delete icon"
-            [disabled]="element.authorId === currentUser['id'] ? false : true"
-          >
-            <mat-icon (click)="handleDelete(element.ticket_no)"
-              >delete</mat-icon
-            >
-          </button>
-        </td>
-      </ng-container>
-      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
-    </table>
+  <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons aria-label="Select page of periodic elements">
+  </mat-paginator>
+</div>
 
-    <mat-paginator
-      [pageSizeOptions]="[5, 10, 20]"
-      showFirstLastButtons
-      aria-label="Select page of periodic elements"
-    >
-    </mat-paginator>
-  </div>
-
-  <button
-    style="margin-top: 60px"
-    (click)="openDialog()"
-    mat-stroked-button
-    color="primary"
-  >
-    Add Ticket
-  </button>
-<!-- </mat-card> -->
+<button style="margin-top: 60px" (click)="openDialog()" mat-stroked-button color="primary">
+  Add Ticket
+</button>

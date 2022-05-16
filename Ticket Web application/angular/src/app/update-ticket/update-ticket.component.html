@@ -1,21 +1,9 @@
-<form
-  [formGroup]="update_ticket"
-  (ngSubmit)="handleSubmit(update_ticket)"
-  class="example-form"
-  novalidate
->
+<form [formGroup]="update_ticket" (ngSubmit)="handleSubmit(update_ticket)" class="example-form" novalidate>
   <mat-form-field class="example-full-width" appearance="fill">
     <mat-label>Ticket Tile</mat-label>
 
-    <input
-      [value]="ticket_title"
-      formControlName="ticket_title"
-      matInput
-      #ticket_title
-      maxlength="256"
-      required
-    />
-
+    <input name="ticket_title" [value]="ticket_title" formControlName="ticket_title" matInput #ticket_title
+      maxlength="256" required />
     <mat-hint align="start"> </mat-hint>
     <mat-hint align="end">{{ ticket_title.value.length }} / 256</mat-hint>
   </mat-form-field>
@@ -23,36 +11,17 @@
   <mat-form-field class="example-full-width" appearance="fill">
     <mat-label>Ticket Description</mat-label>
 
-    <input
-      [value]="ticket_desc"
-      formControlName="ticket_desc"
-      matInput
-      #ticket_desc
-      maxlength="256"
-      required
-    />
-
+    <input [value]="ticket_desc" formControlName="ticket_desc" matInput #ticket_desc maxlength="256" required />
     <mat-hint align="start"> </mat-hint>
     <mat-hint align="end">{{ ticket_desc.value.length }} / 256</mat-hint>
   </mat-form-field>
   <br />
-  <button
-    mat-button
-    mat-dialog-close
-    type="reset"
-    mat-stroked-button
-    color="warn"
-  >
+  <button mat-button mat-dialog-close type="reset" mat-stroked-button color="warn">
     Cancel
   </button>
   &nbsp;
-  <button
-    mat-button
-    mat-dialog-close
-    type="submit"
-    mat-raised-button
-    color="primary"
-  >
+  <button [disabled]="update_ticket.invalid" mat-button mat-dialog-close type="submit" mat-raised-button
+    color="primary">
     Update
   </button>
   <br />

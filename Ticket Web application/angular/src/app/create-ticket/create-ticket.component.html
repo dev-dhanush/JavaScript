@@ -19,5 +19,5 @@
   <br />
   <button mat-button mat-dialog-close type="reset" mat-stroked-button color="warn">Cancel</button>
   &nbsp;
-  <button mat-button mat-dialog-close type="submit" mat-raised-button color="primary">Add</button>
+  <button mat-button mat-dialog-close [disabled]="add_ticket.invalid" type="submit" mat-raised-button color="primary">Add</button>
 </form>

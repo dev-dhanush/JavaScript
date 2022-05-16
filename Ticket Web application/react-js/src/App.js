@@ -1,6 +1,11 @@
 import React, { useCallback } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom"
+import {
+	Route,
+	Link,
+	Routes,
+	BrowserRouter,
+} from "react-router-dom"
 
 import "bootstrap/dist/css/bootstrap.min.css"
 import "./App.css"
@@ -8,9 +13,8 @@ import "./App.css"
 import Login from "./components/auth/Login"
 import Register from "./components/auth/Register"
 import Home from "./components/Home"
-import Profile from "./components/auth/Profile"
 
-import { logout } from "./components/auth/authSlice"
+import { logout } from "./components/slice/authSlice"
 
 const App = () => {
 	const { user: currentUser } = useSelector((state) => state.auth)
@@ -21,7 +25,7 @@ const App = () => {
 	}, [dispatch])
 
 	return (
-		<Router>
+		<BrowserRouter>
 			<div>
 				<nav className="navbar navbar-expand navbar-dark bg-dark">
 					<Link to={"/"} className="navbar-brand">
@@ -29,7 +33,7 @@ const App = () => {
 					</Link>
 					<div className="navbar-nav mr-auto">
 						<li className="nav-item">
-							<Link to={"/ticket"} className="nav-link">
+							<Link to={"/"} className="nav-link">
 								Tickets
 							</Link>
 						</li>
@@ -37,13 +41,17 @@ const App = () => {
 
 					{currentUser ? (
 						<div className="navbar-nav ml-auto">
-							<li className="nav-item">
+							{/* <li className="nav-item">
 								<Link to={"/profile"} className="nav-link">
 									{currentUser.username}
 								</Link>
-							</li>
+							</li> */}
 							<li className="nav-item">
-								<a href="/login" className="nav-link" onClick={logOut}>
+								<a
+									href="/login"
+									className="nav-link"
+									onClick={logOut}
+								>
 									LogOut
 								</a>
 							</li>
@@ -65,16 +73,17 @@ const App = () => {
 					)}
 				</nav>
 
-				<div className="container-fluid">
-					<Switch>
-						<Route exact path={["/", "/ticket"]} component={Home} />
-						<Route exact path="/login" component={Login} />
-						<Route exact path="/register" component={Register} />
-						<Route exact path="/profile" component={Profile} />
-					</Switch>
+				<div>
+					<Routes>
+						<Route exact path="/" element={<Home/>} />
+						<Route exact path="/ticket" element={<Home/>} />
+						<Route exact path="/login" element={<Login/>} />
+						<Route exact path="/register" element={<Register/>} />
+						{/* <Route exact path="/profile" element={<Profile/>} /> */}
+					</Routes>
 				</div>
 			</div>
-		</Router>
+		</BrowserRouter>
 	)
 }
 

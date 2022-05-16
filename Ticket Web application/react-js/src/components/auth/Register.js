@@ -3,8 +3,8 @@ import { useDispatch, useSelector } from "react-redux"
 import { Formik, Field, Form, ErrorMessage } from "formik"
 import * as Yup from "yup"
 
-import { register } from "../auth/authSlice"
-import { clearMessage } from "../message/messageSlice"
+import { register } from "../slice/authSlice"
+import { clearMessage } from "../slice/messageSlice"
 
 const Register = () => {
 	const [successful, setSuccessful] = useState(false)

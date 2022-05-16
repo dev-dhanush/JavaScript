@@ -16,9 +16,9 @@ export class RegisterComponent implements OnInit {
   isSignUpFailed = false;
   errorMessage = '';
 
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService) { }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 
   onSubmit(): void {
     const { username, email, password } = this.form;
@@ -31,7 +31,6 @@ export class RegisterComponent implements OnInit {
       },
       error: (err) => {
         console.log(err);
-
         this.errorMessage = err.error.firstError;
         this.isSignUpFailed = true;
       },

@@ -69,11 +69,18 @@ export class TicketsComponent implements OnInit {
   };
 
   fetchTicket = () => {
-    this.ticketService.getAllTicketService().subscribe((data: any) => {
-      this.dataSource = new MatTableDataSource<Ticket>(data['data']);
+    this.ticketService.getAllTicketService().subscribe((data) => {
+      try {
+        console.log("data", data);
 
-      this.dataSource.paginator = this.paginator;
-      this.dataSource.sort = this.sort;
+        this.dataSource = new MatTableDataSource<Ticket>(data['data']);
+
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+
+      } catch (error) {
+        // console.log(error);
+      }
     });
   };
 

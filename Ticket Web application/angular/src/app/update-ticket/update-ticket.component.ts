@@ -16,26 +16,28 @@ export interface DialogData {
   styleUrls: ['./update-ticket.component.css'],
 })
 export class UpdateTicketComponent implements Inject {
-  constructor(
-    @Inject(MAT_DIALOG_DATA) public data: DialogData,
-    private ticketService: TicketService,
-    private router: Router
-  ) {
-    this.update_ticket.setValue({
-      ticket_title: data.ticket_title,
-      ticket_desc: data.ticket_desc,
-    });
-  }
   message: String;
   currentUser = this.data
   ticket_title: String;
   ticket_desc: String;
   token: any;
 
-  update_ticket = new FormGroup({
+  update_ticket: FormGroup = new FormGroup({
     ticket_title: new FormControl(),
     ticket_desc: new FormControl(),
   });
+  submitted = false;
+
+  constructor(
+    @Inject(MAT_DIALOG_DATA) public data: DialogData,
+    private ticketService: TicketService,
+    private router: Router,
+  ) {
+    this.update_ticket.setValue({
+      ticket_title: data.ticket_title,
+      ticket_desc: data.ticket_desc,
+    });
+  }
 
   reloadCurrentRoute() {
     let currentUrl = this.router.url;
@@ -46,11 +48,10 @@ export class UpdateTicketComponent implements Inject {
 
   handleSubmit = (form: any) => {
     try {
-      const response = this.ticketService.updateTicketService(
+      !this.update_ticket.invalid && this.ticketService.updateTicketService(
         form.value,
         this.data.editId
-      );
-      response.subscribe((data: any) => {
+      ).subscribe((data: any) => {
         if (data['data']) {
           this.ticketService.getAllTicketService();
           this.reloadCurrentRoute();

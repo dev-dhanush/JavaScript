@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { AuthService } from '../_services/auth.service';
 import { TokenStorageService } from '../_services/token-storage.service';
 import { Router } from '@angular/router';
@@ -12,32 +12,30 @@ export class LoginComponent implements OnInit {
     email: null,
     password: null,
   };
-  isLoggedIn = false;
   isLoginFailed = false;
   errorMessage = '';
 
   constructor(
-    private authService: AuthService,
+    readonly authService: AuthService,
     private tokenStorage: TokenStorageService,
     private router: Router
   ) {}
 
   ngOnInit(): void {
     if (this.tokenStorage.getToken()) {
-      this.isLoggedIn = true;
+      this.authService.isLoggedIn = true;
     }
   }
 
   onSubmit(): void {
     const { email, password } = this.form;
-
     this.authService.login(email, password).subscribe({
       next: (data) => {
         this.tokenStorage.saveToken(data.data.accessToken);
         this.tokenStorage.saveUser(data.data);
 
         this.isLoginFailed = false;
-        this.isLoggedIn = true;
+        this.authService.isLoggedIn = true;
 
         this.router.navigate(['/profile']);
       },

@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { AuthService } from './_services/auth.service';
 import { TokenStorageService } from './_services/token-storage.service';
 
 @Component({
@@ -8,22 +9,21 @@ import { TokenStorageService } from './_services/token-storage.service';
   styleUrls: ['./app.component.css'],
 })
 export class AppComponent {
-  private roles: string[] = [];
-  isLoggedIn: Boolean = false;
   showAdminBoard = false;
   showModeratorBoard = false;
   username?: string;
 
   constructor(
+    readonly authService:AuthService,
     private tokenStorageService: TokenStorageService,
     private router: Router,
   ) {}
 
   ngOnInit(): void {
-    this.isLoggedIn = !!this.tokenStorageService.getToken();
+    this.authService.isLoggedIn = !!this.tokenStorageService.getToken();
     
 
-    if (this.isLoggedIn) {
+    if (this.authService.isLoggedIn) {
       const user = this.tokenStorageService.getUser();
       this.username = user.username;
     }

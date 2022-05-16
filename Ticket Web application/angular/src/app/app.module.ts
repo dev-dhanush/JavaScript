@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
-
 import { MatTableModule } from '@angular/material/table';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -74,6 +73,7 @@ import { UpdateTicketComponent } from './update-ticket/update-ticket.component';
   ],
   imports: [
     BrowserAnimationsModule,
+    ReactiveFormsModule,
     MatSortModule,
     MatTableModule,
     BrowserModule,
@@ -81,11 +81,8 @@ import { UpdateTicketComponent } from './update-ticket/update-ticket.component';
     FormsModule,
     HttpClientModule,
     ReactiveFormsModule,
-
     MatNativeDateModule,
     ReactiveFormsModule,
-    // ],
-    // exports: [
     A11yModule,
     CdkAccordionModule,
     ClipboardModule,
