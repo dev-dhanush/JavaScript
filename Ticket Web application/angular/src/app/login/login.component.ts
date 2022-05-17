@@ -12,6 +12,8 @@ export class LoginComponent implements OnInit {
     email: null,
     password: null,
   };
+  validateEmail = true;
+  isLoginSuccessful = false;
   isLoginFailed = false;
   errorMessage = '';
 
@@ -19,7 +21,7 @@ export class LoginComponent implements OnInit {
     readonly authService: AuthService,
     private tokenStorage: TokenStorageService,
     private router: Router
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     if (this.tokenStorage.getToken()) {
@@ -33,14 +35,20 @@ export class LoginComponent implements OnInit {
       next: (data) => {
         this.tokenStorage.saveToken(data.data.accessToken);
         this.tokenStorage.saveUser(data.data);
-
+        this.isLoginSuccessful = true
         this.isLoginFailed = false;
         this.authService.isLoggedIn = true;
 
         this.router.navigate(['/profile']);
       },
       error: (err) => {
-        this.errorMessage = err.error.error.message;
+        console.log(err);
+
+        if (err.error.firstError) {
+          this.errorMessage = err.error.firstError;
+        } else {
+          this.errorMessage = err.error.error;
+        }
         this.isLoginFailed = true;
       },
     });

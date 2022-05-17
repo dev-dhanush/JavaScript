@@ -43,16 +43,19 @@
         edit
       </th>
       <td mat-cell *matCellDef="let element">
-        <button mat-mini-fab mat-stroked-button (click)="
+        <button *ngIf="element.authorId === currentUser['id']" mat-mini-fab mat-stroked-button (click)="
             handleEdit(
               element.ticket_title,
               element.ticket_desc,
               element.ticket_no
             )
-          " color="primary" aria-label="Example icon button with a Edit icon"
-          [disabled]="element.authorId === currentUser['id'] ? false : true">
+          " color="primary" aria-label="Example icon button with a Edit icon">
           <mat-icon>edit</mat-icon>
         </button>
+        <button disabled *ngIf="!(element.authorId === currentUser['id'])" mat-mini-fab mat-stroked-button>
+          <mat-icon>edit</mat-icon>
+        </button>
+
       </td>
     </ng-container>
 
@@ -61,8 +64,11 @@
         delete
       </th>
       <td mat-cell *matCellDef="let element">
-        <button mat-mini-fab color="warn" aria-label="Example icon button with a Delete icon"
+        <button *ngIf="element.authorId === currentUser['id']" mat-mini-fab color="warn" aria-label="Example icon button with a Delete icon"
           [disabled]="element.authorId === currentUser['id'] ? false : true" (click)="handleDelete(element.ticket_no)">
+          <mat-icon>delete</mat-icon>
+        </button>
+        <button mat-mini-fab disabled color="warn" aria-label="Example icon button with a Delete icon" *ngIf="!(element.authorId === currentUser['id'])">
           <mat-icon>delete</mat-icon>
         </button>
       </td>

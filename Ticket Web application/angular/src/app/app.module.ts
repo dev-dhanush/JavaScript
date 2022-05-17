@@ -59,6 +59,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CreateTicketComponent } from './create-ticket/create-ticket.component';
 import { UpdateTicketComponent } from './update-ticket/update-ticket.component';
+import { EnvServiceProvider } from './env.service.provider';
 
 @NgModule({
   declarations: [
@@ -129,7 +130,7 @@ import { UpdateTicketComponent } from './update-ticket/update-ticket.component';
     PortalModule,
     ScrollingModule,
   ],
-  providers: [authInterceptorProviders],
+  providers: [authInterceptorProviders,EnvServiceProvider],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
