@@ -3,9 +3,6 @@ import { NgForm } from '@angular/forms';
 
 import { MemberService } from '../shared/member.service';
 import { Member } from '../shared/member.model';
-// import { Message } from '@angular/compiler/src/i18n/i18n_ast';
-
-// declare var Mes: any;
 
 @Component({
   selector: 'app-member',

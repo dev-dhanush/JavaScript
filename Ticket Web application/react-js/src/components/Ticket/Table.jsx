@@ -1,4 +1,4 @@
-import React, { useEffect } from "react"
+import React, { useEffect, useCallback } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import PropTypes from "prop-types"
 import { makeStyles } from "@material-ui/core/styles"
@@ -20,6 +20,7 @@ import DeleteIcon from "@material-ui/icons/Delete"
 import AddTicket from "./AddTicket"
 import EditTicket from "./EditTicket"
 import { deleteTic, fetchAllTickets } from "./ticketAction"
+import { logout } from "../slice/authSlice"
 
 function descendingComparator(a, b, orderBy) {
 	if (b[orderBy] < a[orderBy]) {
@@ -30,11 +31,11 @@ function descendingComparator(a, b, orderBy) {
 	}
 	return 0
 }
-
 function getComparator(order, orderBy) {
-	return order === "desc" ? (a, b) => descendingComparator(a, b, orderBy) : (a, b) => -descendingComparator(a, b, orderBy)
+	return order === "desc"
+		? (a, b) => descendingComparator(a, b, orderBy)
+		: (a, b) => -descendingComparator(a, b, orderBy)
 }
-
 function stableSort(array, comparator) {
 	const stabilizedThis = array.map((el, index) => [el, index])
 	stabilizedThis.sort((a, b) => {
@@ -44,16 +45,24 @@ function stableSort(array, comparator) {
 	})
 	return stabilizedThis.map((el) => el[0])
 }
-
 const headCells = [
-	{ id: "ticket_no", numeric: false, disablePadding: true, label: "Ticket NO" },
-	{ id: "ticket_title", numeric: true, disablePadding: false, label: "Title" },
+	{
+		id: "ticket_no",
+		numeric: false,
+		disablePadding: true,
+		label: "Ticket NO",
+	},
+	{
+		id: "ticket_title",
+		numeric: true,
+		disablePadding: false,
+		label: "Title",
+	},
 	{ id: "ticket_desc", numeric: true, disablePadding: false, label: "Desc" },
 	{ id: "author", numeric: true, disablePadding: false, label: "Author" },
 	{ id: "delete", numeric: true, disablePadding: false, label: "Delete" },
 	{ id: "edit", numeric: true, disablePadding: false, label: "Edit" },
 ]
-
 function EnhancedTableHead(props) {
 	const { classes, order, orderBy, onRequestSort } = props
 	const createSortHandler = (property) => (event) => {
@@ -65,10 +74,25 @@ function EnhancedTableHead(props) {
 			<TableRow>
 				<TableCell padding="checkbox"></TableCell>
 				{headCells.map((headCell) => (
-					<TableCell key={headCell.id} align={headCell.numeric ? "right" : "left"} padding={headCell.disablePadding ? "none" : "normal"} sortDirection={orderBy === headCell.id ? order : false}>
-						<TableSortLabel active={orderBy === headCell.id} direction={orderBy === headCell.id ? order : "asc"} onClick={createSortHandler(headCell.id)}>
+					<TableCell
+						key={headCell.id}
+						align={headCell.numeric ? "right" : "left"}
+						padding={headCell.disablePadding ? "none" : "normal"}
+						sortDirection={orderBy === headCell.id ? order : false}
+					>
+						<TableSortLabel
+							active={orderBy === headCell.id}
+							direction={orderBy === headCell.id ? order : "asc"}
+							onClick={createSortHandler(headCell.id)}
+						>
 							{headCell.label}
-							{orderBy === headCell.id ? <span className={classes.visuallyHidden}>{order === "desc" ? "sorted descending" : "sorted ascending"}</span> : null}
+							{orderBy === headCell.id ? (
+								<span className={classes.visuallyHidden}>
+									{order === "desc"
+										? "sorted descending"
+										: "sorted ascending"}
+								</span>
+							) : null}
 						</TableSortLabel>
 					</TableCell>
 				))}
@@ -76,14 +100,12 @@ function EnhancedTableHead(props) {
 		</TableHead>
 	)
 }
-
 EnhancedTableHead.propTypes = {
 	classes: PropTypes.object.isRequired,
 	onRequestSort: PropTypes.func.isRequired,
 	order: PropTypes.oneOf(["asc", "desc"]).isRequired,
 	orderBy: PropTypes.string.isRequired,
 }
-
 const useStyles = makeStyles((theme) => ({
 	root: {
 		width: "100%",
@@ -118,6 +140,22 @@ export default function EnhancedTable() {
 	const { tickets: rows } = useSelector((state) => state.ticket)
 	const dispatch = useDispatch()
 
+	const errorState = useSelector((state) => state.ticket.error)
+	const [error, setError] = React.useState("")
+	const logOut = useCallback(() => {
+		console.log("logout called fun")
+		dispatch(logout())
+		window.location.href = "/login"
+	}, [dispatch])
+
+	useEffect(() => {
+		if (errorState) {
+			setError(errorState)
+			console.log("logout called effect")
+			logOut()
+		}
+	}, [errorState, logOut])
+
 	useEffect(() => {
 		dispatch(fetchAllTickets())
 	}, [dispatch])
@@ -144,65 +182,134 @@ export default function EnhancedTable() {
 		dispatch(deleteTic(id))
 		dispatch(fetchAllTickets())
 	}
-	const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage)
+	const emptyRows =
+		rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage)
 
 	return (
 		<div className={classes.root}>
-			<Paper className={classes.paper}>
-				<TableContainer>
-					<Table className={classes.table} aria-labelledby="tableTitle" size={dense ? "small" : "medium"} aria-label="enhanced table">
-						<EnhancedTableHead classes={classes} order={order} orderBy={orderBy} onRequestSort={handleRequestSort} rowCount={rows.length} />
-						<TableBody>
-							{stableSort(rows, getComparator(order, orderBy))
-								.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-								.map((row, index) => {
-									const labelId = `enhanced-table-checkbox-${index}`
-
-									return (
-										<TableRow hover role="checkbox" tabIndex={-1} key={row.ticket_no}>
-											<TableCell padding="checkbox"></TableCell>
-											<TableCell component="th" id={labelId} scope="row" padding="none">
-												{row.ticket_no}
-											</TableCell>
-											<TableCell align="right">{row.ticket_title}</TableCell>
-											<TableCell align="right">{row.ticket_desc}</TableCell>
-											<TableCell align="right">{row.author.username}</TableCell>
-											<TableCell align="right">
-												<Tooltip
-													onClick={() => {
-														handleDelete(row.ticket_no)
-													}}
-													title="Delete"
-												>
-													<IconButton aria-label="delete">
-														<DeleteIcon />
-													</IconButton>
-												</Tooltip>
-											</TableCell>
-
-											<TableCell align="right">
-												<Tooltip title="Update">
-													<IconButton aria-label="edit">
-														<EditTicket ticket_no={row.ticket_no} />
-													</IconButton>
-												</Tooltip>
-											</TableCell>
-										</TableRow>
+			{error && (
+				<div className="alert alert-danger" role="alert">
+					{" "}
+					Error : {error}{" "}
+				</div>
+			)}
+			{!error && (
+				<Paper className={classes.paper}>
+					<TableContainer>
+						<Table
+							className={classes.table}
+							aria-labelledby="tableTitle"
+							size={dense ? "small" : "medium"}
+							aria-label="enhanced table"
+						>
+							<EnhancedTableHead
+								classes={classes}
+								order={order}
+								orderBy={orderBy}
+								onRequestSort={handleRequestSort}
+								rowCount={rows.length}
+							/>
+							<TableBody>
+								{stableSort(rows, getComparator(order, orderBy))
+									.slice(
+										page * rowsPerPage,
+										page * rowsPerPage + rowsPerPage
 									)
-								})}
-							{emptyRows > 0 && (
-								<TableRow style={{ height: (dense ? 33 : 53) * emptyRows }}>
-									<TableCell colSpan={6} />
-								</TableRow>
-							)}
-						</TableBody>
-					</Table>
-				</TableContainer>
-				<TablePagination rowsPerPageOptions={[5, 10, 25]} component="div" count={rows.length} rowsPerPage={rowsPerPage} page={page} onPageChange={handleChangePage} onRowsPerPageChange={handleChangeRowsPerPage} />
-			</Paper>
-			<div style={{ display: "flex", justifyContent: "space-around", flexDirection: "row" }}>
-				<FormControlLabel control={<Switch checked={dense} onChange={handleChangeDense} />} label="Dense padding" />
-				<AddTicket />
+									.map((row, index) => {
+										const labelId = `enhanced-table-checkbox-${index}`
+
+										return (
+											<TableRow
+												hover
+												role="checkbox"
+												tabIndex={-1}
+												key={row.ticket_no}
+											>
+												<TableCell padding="checkbox"></TableCell>
+												<TableCell
+													component="th"
+													id={labelId}
+													scope="row"
+													padding="none"
+												>
+													{row.ticket_no}
+												</TableCell>
+												<TableCell align="right">
+													{row.ticket_title}
+												</TableCell>
+												<TableCell align="right">
+													{row.ticket_desc}
+												</TableCell>
+												<TableCell align="right">
+													{row.author.username}
+												</TableCell>
+												<TableCell align="right">
+													<Tooltip
+														onClick={() => {
+															handleDelete(
+																row.ticket_no
+															)
+														}}
+														title="Delete"
+													>
+														<IconButton aria-label="delete">
+															<DeleteIcon />
+														</IconButton>
+													</Tooltip>
+												</TableCell>
+
+												<TableCell align="right">
+													<Tooltip title="Update">
+														<IconButton aria-label="edit">
+															<EditTicket
+																ticket_no={
+																	row.ticket_no
+																}
+															/>
+														</IconButton>
+													</Tooltip>
+												</TableCell>
+											</TableRow>
+										)
+									})}
+								{emptyRows > 0 && (
+									<TableRow
+										style={{
+											height:
+												(dense ? 33 : 53) * emptyRows,
+										}}
+									>
+										<TableCell colSpan={6} />
+									</TableRow>
+								)}
+							</TableBody>
+						</Table>
+					</TableContainer>
+					<TablePagination
+						rowsPerPageOptions={[5, 10, 25]}
+						component="div"
+						count={rows.length}
+						rowsPerPage={rowsPerPage}
+						page={page}
+						onPageChange={handleChangePage}
+						onRowsPerPageChange={handleChangeRowsPerPage}
+					/>
+				</Paper>
+			)}
+			<div
+				style={{
+					display: "flex",
+					justifyContent: "space-around",
+					flexDirection: "row",
+				}}
+			>
+				<FormControlLabel
+					control={
+						<Switch checked={dense} onChange={handleChangeDense} />
+					}
+					label="Dense padding"
+				/>
+				<AddTicket error={error} />
 			</div>
 		</div>
 	)

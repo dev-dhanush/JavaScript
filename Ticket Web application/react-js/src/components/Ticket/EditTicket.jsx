@@ -1,73 +1,118 @@
-import React, { useState, useEffect } from "react"
+import React, { useState } from "react"
 import { useDispatch } from "react-redux"
-import { Button } from "@material-ui/core"
-import TextField from "@material-ui/core/TextField"
-import Dialog from "@material-ui/core/Dialog"
-import DialogActions from "@material-ui/core/DialogActions"
-import DialogContent from "@material-ui/core/DialogContent"
-import DialogTitle from "@material-ui/core/DialogTitle"
+import {
+	Box,
+	Button,
+	TextField,
+	Dialog,
+	DialogActions,
+	DialogContent,
+	DialogTitle,
+} from "@material-ui/core"
 import EditCircleRoundedIcon from "@material-ui/icons/Edit"
-import { getTicket as getTicketService } from "./ticketService"
+import { getTicket as getTicketService } from "./ticketAction"
 import { updateTicketAction } from "./ticketAction"
+import { useFormik } from "formik"
 
 const EditTicket = (props) => {
+	const id = props?.ticket_no
 	const [open, setOpen] = React.useState(false)
-	const initialValue = {
-		ticket_no: "",
-		ticket_desc: "",
-	}
+	const [title, setTitle] = useState("")
+	const [desc, setDesc] = useState("")
 
-	const [ticket, setTicket] = useState(initialValue)
-	const { ticket_title, ticket_desc } = ticket
+	const formik = useFormik({
+		initialValues: {
+			ticket_title: title,
+			ticket_desc: desc,
+		},
+		enableReinitialize: true,
+		onSubmit: (val) => {
+			dispatch(updateTicketAction(id, val))
+			handleClose()
+		},
+	})
+
 	const dispatch = useDispatch()
-
-	const id = props.ticket_no
-	const onValueChange = (e) => {
-		setTicket({ ...ticket, [e.target.name]: e.target.value })
-	}
 
 	const handleClickOpen = () => {
 		setOpen(true)
+		getTicketService(id)
+			.then((data) => {
+				const { ticket_title, ticket_desc } = data.data[0]
+				setTitle(ticket_title)
+				setDesc(ticket_desc)
+			})
+			.catch((err) => console.log(err))
 	}
 
 	const handleClose = () => {
 		setOpen(false)
 	}
 
-	const updateTicketDetails = () => {
-		dispatch(updateTicketAction(id, ticket))
-		handleClose()
-	}
-
-	useEffect(() => {
-		if (open) {
-			const existingTicket = getTicketService(id)
-			existingTicket
-				.then((data) => {
-					const { ticket_title, ticket_desc } = data.data[0]
-					setTicket({ ticket_title, ticket_desc })
-				})
-				.catch((err) => console.log(err))
-		}
-	}, [id, open])
-
 	return (
 		<div>
-			<EditCircleRoundedIcon style={{ fontSize: 25 }} color="action" onClick={handleClickOpen} />
-			<Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
+			<EditCircleRoundedIcon
+				style={{ fontSize: 25 }}
+				color="action"
+				onClick={handleClickOpen}
+			/>
+			<Dialog
+				open={open}
+				onClose={handleClose}
+				aria-labelledby="form-dialog-title"
+			>
 				<DialogTitle id="form-dialog-title">Update Ticket</DialogTitle>
-				<DialogContent>
-					<TextField onChange={(e) => onValueChange(e)} name="ticket_title" value={ticket_title} autoFocus margin="dense" id="ticket_title" label="Ticket Title" type="text" fullWidth />
-					<TextField onChange={(e) => onValueChange(e)} name="ticket_desc" value={ticket_desc} margin="dense" id="ticket_desc" label="Ticket Description" type="text" fullWidth />
-				</DialogContent>
-				<DialogActions>
-					<Button onClick={handleClose} color="primary">
-						Cancel
-					</Button>
-					<Button onClick={updateTicketDetails} color="primary">
-						Update Ticket
-					</Button>
-				</DialogActions>
+				<Box component="form" onSubmit={formik.handleSubmit}>
+					<DialogContent>
+						<TextField
+							required
+							name="ticket_title"
+							autoFocus
+							margin="dense"
+							id="ticket_title"
+							label="Ticket Title"
+							type="text"
+							fullWidth
+							value={formik.values.ticket_title}
+							onChange={formik.handleChange}
+							error={
+								formik.touched.ticket_title &&
+								Boolean(formik.errors.ticket_title)
+							}
+							helperText={
+								formik.touched.ticket_title &&
+								formik.errors.ticket_title
+							}
+						/>
+						<TextField
+							required
+							name="ticket_desc"
+							margin="dense"
+							id="ticket_desc"
+							label="Ticket Description"
+							type="text"
+							fullWidth
+							value={formik.values.ticket_desc}
+							onChange={formik.handleChange}
+							error={
+								formik.touched.ticket_desc &&
+								Boolean(formik.errors.ticket_desc)
+							}
+							helperText={
+								formik.touched.ticket_desc &&
+								formik.errors.ticket_desc
+							}
+						/>
+					</DialogContent>
+					<DialogActions>
+						<Button onClick={handleClose} color="primary">
+							Cancel
+						</Button>
+						<Button type="submit" color="primary">
+							Update Ticket
+						</Button>
+					</DialogActions>
+				</Box>
 			</Dialog>
 		</div>
 	)

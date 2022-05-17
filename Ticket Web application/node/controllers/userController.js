@@ -1,8 +1,13 @@
 import { register, login, all } from "../services/auth.services.js"
 import createError from "http-errors"
-import { userCreatedSuccessfully, accessDenied, userLoginSuccessfully, userSignOutSuccessfully } from "../messages/index.js"
+import {
+	userCreatedSuccessfully,
+	accessDenied,
+	userLoginSuccessfully,
+	userSignOutSuccessfully,
+} from "../messages/index.js"
 
-export async function registerUser(req, res, next) {
+export async function registerUser(req, res) {
 	try {
 		const user = await register(req.body)
 		res.status(200).json({
@@ -11,11 +16,17 @@ export async function registerUser(req, res, next) {
 			data: user,
 		})
 	} catch (error) {
-		next(createError(error.statusCode, error.message))
+		if (error.code === "P2002") {
+			return res
+				.status(400)
+				.json({ error: "User with that credentials already exists" })
+		} else {
+			res.status(400).json({ error: error })
+		}
 	}
 }
 
-const _login = async (req, res, next) => {
+const _login = async (req, res) => {
 	try {
 		const data = await login(req.body)
 		res.status(200).json({
@@ -24,7 +35,7 @@ const _login = async (req, res, next) => {
 			data,
 		})
 	} catch (error) {
-		res.status(400).json({ error: error })
+		res.status(400).json({ error: error.message })
 	}
 }
 export { _login as login }
@@ -37,8 +48,8 @@ export async function getAllUser(req, res, next) {
 			message: "",
 			data: user,
 		})
-	} catch (e) {
-		next(createError(e.statusCode, e.message))
+	} catch (error) {
+		res.status(400).json({ error: error })
 	}
 }
 
